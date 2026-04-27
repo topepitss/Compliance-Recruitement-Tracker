@@ -218,6 +218,16 @@ body.is-admin [data-admin-only] {
   font-weight: 900;
 }
 
+.nav-icon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .sidebar-nav a:hover,
 .sidebar-nav a.is-active {
   background: #ffffff;

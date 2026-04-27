@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SustainHealth | Casual Candidates Compliance Tracker</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -27,34 +28,48 @@
 
       <nav class="sidebar-nav" aria-label="Tracker sections">
         <a href="#trackerTable" title="Candidates">
-          <span class="nav-icon">C</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a4 4 0 10-8 0 4 4 0 008 0zm-11 9a7 7 0 0114 0"/></svg>
+          </span>
           <span class="nav-label">Candidates</span>
         </a>
         <a href="#archiveSummary" title="Archives">
-          <span class="nav-icon">A</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14v13H5V7zm2-4h10l2 4H5l2-4zm4 8h2"/></svg>
+          </span>
           <span class="nav-label">Archives</span>
         </a>
         <a href="#stateRequirements" title="State Docs">
-          <span class="nav-icon">S</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3zm7 0v5h5M9 13h6M9 17h6"/></svg>
+          </span>
           <span class="nav-label">State Docs</span>
         </a>
         <a href="#dailyReport" title="Daily Report">
-          <span class="nav-icon">R</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M7 16V9m5 7V5m5 11v-4"/></svg>
+          </span>
           <span class="nav-label">Daily Report</span>
         </a>
         <a href="change-password.html" title="Change Password">
-          <span class="nav-icon">P</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0110 0v2m-9 0h8a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6a2 2 0 012-2z"/></svg>
+          </span>
           <span class="nav-label">Change Password</span>
         </a>
         <a href="admin.html" title="Admin Dashboard" data-admin-only>
-          <span class="nav-icon">U</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-2.9 8.5-7 10-4.1-1.5-7-5.4-7-10V6l7-3zm0 4v10m-4-5h8"/></svg>
+          </span>
           <span class="nav-label">Admin</span>
         </a>
       </nav>
 
       <div class="sidebar-footer">
         <button id="logoutBtn" class="sidebar-logout-btn" type="button" title="Logout">
-          <span class="nav-icon">L</span>
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5m5 5H3m8-8h7a2 2 0 012 2v12a2 2 0 01-2 2h-7"/></svg>
+          </span>
           <span class="nav-label">Logout</span>
         </button>
       </div>

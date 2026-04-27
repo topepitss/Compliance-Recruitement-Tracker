@@ -298,6 +298,18 @@ a {
     var(--surface);
 }
 
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .stats-grid span {
   display: block;
   color: var(--primary-dark);
