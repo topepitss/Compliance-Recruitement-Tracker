@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SustainHealth | Casual Candidates Compliance Tracker</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="js/auth.js" defer></script>
 </head>
 <body data-protected="true">
@@ -64,6 +67,8 @@
           <p>Trial Project for Casual Compliance Process by Bhel</p>
         </div>
       </header>
+
+      <section id="trackerReactPanel" class="react-widget-root" aria-label="Tracker workspace overview"></section>
 
       <section class="tracker-stats" aria-label="Tracker statistics">
         <article>
@@ -217,5 +222,6 @@
 
   <script src="js/script.js" defer></script>
   <script src="js/sidebar.js" defer></script>
+  <script src="js/dashboard-widgets.jsx?v=react-ui-20260428" type="text/babel" data-presets="react" defer></script>
 </body>
 </html>

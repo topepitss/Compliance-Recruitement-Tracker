@@ -412,6 +412,7 @@ body.is-admin [data-admin-only] {
 
 .controls,
 .tracker-stats,
+.react-widget-root,
 .archive-card,
 .state-summary,
 .daily-report,
@@ -459,6 +460,84 @@ body.is-admin [data-admin-only] {
 }
 
 .tracker-stats p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.react-overview {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: 1rem;
+  align-items: stretch;
+  padding: 1rem;
+}
+
+.react-overview-copy {
+  display: grid;
+  align-content: center;
+  min-height: 150px;
+  padding: 1rem;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 79, 101, 0.96), rgba(47, 158, 113, 0.84)),
+    var(--primary);
+  color: #ffffff;
+}
+
+.react-overview-copy .eyebrow {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.react-overview-copy h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.react-overview-copy p:last-child {
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.6;
+}
+
+.react-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.react-metric-card {
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid rgba(23, 107, 135, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.widget-icon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 1.4rem;
+  color: var(--primary-strong);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.react-metric-card span {
+  display: block;
+  color: var(--primary-strong);
+  font-size: 2rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.react-metric-card p {
   margin: 0.35rem 0 0;
   color: var(--muted);
   font-weight: 850;
@@ -1038,6 +1117,12 @@ tr.editing td[contenteditable="true"] {
 
   .controls,
   .archive-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .react-overview,
+  .react-metric-grid,
+  .tracker-stats {
     grid-template-columns: 1fr;
   }
 

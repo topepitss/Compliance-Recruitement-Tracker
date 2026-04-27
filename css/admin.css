@@ -131,6 +131,7 @@ a {
 .admin-hero,
 .guidelines-panel,
 .admin-card,
+.react-widget-root,
 .stats-grid article {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -188,6 +189,84 @@ a {
   background: var(--accent);
   color: #ffffff;
   box-shadow: 0 14px 34px rgba(57, 168, 117, 0.28);
+}
+
+.react-overview {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: 1rem;
+  align-items: stretch;
+  padding: 1rem;
+}
+
+.react-overview-copy {
+  display: grid;
+  align-content: center;
+  min-height: 150px;
+  padding: 1rem;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(22, 49, 58, 0.98), rgba(15, 113, 130, 0.9)),
+    var(--primary-dark);
+  color: #ffffff;
+}
+
+.react-overview-copy .eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.react-overview-copy h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.65rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.react-overview-copy p:last-child {
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+}
+
+.react-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.react-metric-card {
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid rgba(15, 113, 130, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(22, 49, 58, 0.08);
+}
+
+.widget-icon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 1.4rem;
+  color: var(--primary-dark);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.react-metric-card span {
+  display: block;
+  color: var(--primary-dark);
+  font-size: 2rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.react-metric-card p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-weight: 850;
 }
 
 .guidelines-panel {
@@ -444,6 +523,8 @@ a {
   .admin-shell,
   .admin-hero,
   .guidelines-panel,
+  .react-overview,
+  .react-metric-grid,
   .stats-grid {
     grid-template-columns: 1fr;
   }

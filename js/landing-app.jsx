@@ -5,24 +5,27 @@ const navLinks = [
 ];
 
 const metrics = [
-  { value: "24", label: "active records" },
-  { value: "9", label: "docs to review" },
-  { value: "4", label: "state checks" },
+  { value: "24", label: "active records", icon: "users" },
+  { value: "9", label: "docs to review", icon: "file" },
+  { value: "4", label: "state checks", icon: "shield" },
 ];
 
 const features = [
   {
     number: "01",
+    icon: "users",
     title: "Candidate overview",
     copy: "See active, completed, and archived records without losing the details that matter.",
   },
   {
     number: "02",
+    icon: "file",
     title: "Document clarity",
     copy: "Track missing files, state requirements, notes, and readiness in one focused view.",
   },
   {
     number: "03",
+    icon: "chart",
     title: "Daily reporting",
     copy: "Summarize compliance movement with a clean daily outlook your team can scan quickly.",
   },
@@ -42,6 +45,22 @@ const workflowSteps = [
     copy: "Move completed or removed candidates into history while preserving the audit trail.",
   },
 ];
+
+function Icon({ name }) {
+  const paths = {
+    users: <path d="M16 11a4 4 0 10-8 0 4 4 0 008 0zm-11 9a7 7 0 0114 0M18 9a3 3 0 110 6" />,
+    file: <path d="M7 3h7l4 4v14H7V3zm7 0v5h5M9 12h6M9 16h6" />,
+    shield: <path d="M12 3l7 3v5c0 4.6-2.9 8.5-7 10-4.1-1.5-7-5.4-7-10V6l7-3zm0 4v10m-4-5h8" />,
+    chart: <path d="M4 19h16M7 16V9m5 7V5m5 11v-4" />,
+    clock: <path d="M12 4a8 8 0 100 16 8 8 0 000-16zm0 4v5l3 2" />,
+  };
+
+  return (
+    <svg className="landing-icon" viewBox="0 0 24 24" aria-hidden="true">
+      {paths[name] || paths.chart}
+    </svg>
+  );
+}
 
 function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -115,6 +134,7 @@ function Hero() {
         <div className="hero-metrics" aria-label="Tracker highlights">
           {metrics.map((metric) => (
             <div className="metric-card" key={metric.label}>
+              <Icon name={metric.icon} />
               <strong>{metric.value}</strong>
               <span>{metric.label}</span>
             </div>
@@ -202,7 +222,10 @@ function Overview() {
       <div className="feature-grid">
         {features.map((feature) => (
           <article className="feature-card" key={feature.title}>
-            <span className="feature-number">{feature.number}</span>
+            <div className="feature-topline">
+              <span className="feature-number">{feature.number}</span>
+              <Icon name={feature.icon} />
+            </div>
             <h3>{feature.title}</h3>
             <p>{feature.copy}</p>
           </article>

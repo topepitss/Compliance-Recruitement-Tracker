@@ -315,6 +315,22 @@ a {
   line-height: 1.35;
 }
 
+.landing-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--primary);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.metric-card .landing-icon {
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
 .preview-section,
 .section {
   padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1rem, 5vw, 4rem);
@@ -546,9 +562,16 @@ a {
   box-shadow: var(--shadow-lift);
 }
 
+.feature-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2.4rem;
+}
+
 .feature-number {
   display: inline-flex;
-  margin-bottom: 3rem;
   color: var(--primary);
   font-weight: 950;
 }
