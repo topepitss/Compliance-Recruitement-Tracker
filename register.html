@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | SustainHealth Compliance Tracker</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-panel register-panel" aria-labelledby="registerTitle">
+      <div class="login-brand">
+        <a class="brand-link" href="index.html">
+          <span class="brand-mark">SH</span>
+          <span>SustainHealth</span>
+        </a>
+        <h1 id="registerTitle">Private account registration</h1>
+        <p>
+          Create access only if you have the private verification code from the tracker owner.
+        </p>
+      </div>
+
+      <div class="register-guidelines" aria-label="Registration guidelines">
+        <h2>Access guidelines</h2>
+        <ul>
+          <li>Use this form only if Bhel or the tracker owner gave you the private code.</li>
+          <li>Do not share your account or the verification code with anyone else.</li>
+          <li>All registrations, logins, and tracker saves are recorded for admin review.</li>
+          <li>Access can be disabled by a super admin if it is no longer needed.</li>
+        </ul>
+      </div>
+
+      <form id="registerForm" class="login-form">
+        <label>
+          Username
+          <input name="username" type="text" autocomplete="username" minlength="3" maxlength="32" required />
+        </label>
+
+        <label>
+          Password
+          <input name="password" type="password" autocomplete="new-password" minlength="8" required />
+        </label>
+
+        <label>
+          Confirm password
+          <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required />
+        </label>
+
+        <label>
+          Private verification code
+          <input name="verificationCode" type="password" autocomplete="off" required />
+        </label>
+
+        <p id="registerMessage" class="login-error" hidden></p>
+
+        <button type="submit">Create Verified Account</button>
+      </form>
+
+      <p class="auth-switch">
+        Already verified?
+        <a href="login.html">Back to login</a>
+      </p>
+
+      <p class="login-note">
+        Anonymous registration is blocked. Without the private verification code, no account can access confidential tracker documents.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

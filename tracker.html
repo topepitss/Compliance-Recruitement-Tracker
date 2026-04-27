@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SustainHealth | Casual Candidates Compliance Tracker</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/auth.js" defer></script>
+</head>
+<body data-protected="true">
+  <div class="app-shell">
+    <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="true" aria-label="Collapse sidebar" aria-controls="trackerSidebar">
+      <span class="sidebar-toggle-icon">||</span>
+    </button>
+
+    <aside id="trackerSidebar" class="sidebar" aria-label="Account sidebar">
+      <div class="sidebar-brand">
+        <span class="sidebar-mark" aria-hidden="true">SH</span>
+        <div class="sidebar-brand-text">
+          <strong>SustainHealth</strong>
+          <span>Compliance Tracker</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Tracker sections">
+        <a href="#trackerTable" title="Candidates">
+          <span class="nav-icon">C</span>
+          <span class="nav-label">Candidates</span>
+        </a>
+        <a href="#archiveSummary" title="Archives">
+          <span class="nav-icon">A</span>
+          <span class="nav-label">Archives</span>
+        </a>
+        <a href="#stateRequirements" title="State Docs">
+          <span class="nav-icon">S</span>
+          <span class="nav-label">State Docs</span>
+        </a>
+        <a href="#dailyReport" title="Daily Report">
+          <span class="nav-icon">R</span>
+          <span class="nav-label">Daily Report</span>
+        </a>
+        <a href="change-password.html" title="Change Password">
+          <span class="nav-icon">P</span>
+          <span class="nav-label">Change Password</span>
+        </a>
+        <a href="admin.html" title="Admin Dashboard" data-admin-only>
+          <span class="nav-icon">U</span>
+          <span class="nav-label">Admin</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="sidebar-logout-btn" type="button" title="Logout">
+          <span class="nav-icon">L</span>
+          <span class="nav-label">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <main id="trackerContent" class="container">
+      <header class="hero">
+        <div>
+          <h1>SustainHealth | Casual Candidates Compliance Tracker</h1>
+          <p>Trial Project for Casual Compliance Process by Bhel</p>
+        </div>
+      </header>
+
+      <section class="tracker-stats" aria-label="Tracker statistics">
+        <article>
+          <span id="activeStat">0</span>
+          <p>Active</p>
+        </article>
+        <article>
+          <span id="pendingStat">0</span>
+          <p>Pending</p>
+        </article>
+        <article>
+          <span id="completedStat">0</span>
+          <p>Completed</p>
+        </article>
+        <article>
+          <span id="missingDocsStat">0</span>
+          <p>Missing Docs</p>
+        </article>
+      </section>
+
+    <section class="controls">
+      <button id="addRowBtn" class="primary-btn">Add Candidate</button>
+      <label class="search-group">
+        Search:
+        <input id="searchInput" type="search" placeholder="Search name, role, state, or notes" />
+      </label>
+      <label class="filter-group">
+        View:
+        <select id="viewSelect">
+          <option value="active">Active</option>
+          <option value="completed">Completed Archive</option>
+          <option value="deleted">Deleted Archive</option>
+        </select>
+      </label>
+      <label class="filter-group">
+        Status:
+        <select id="statusFilter">
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+        </select>
+      </label>
+      <label class="filter-group">
+        State:
+        <select id="stateFilter">
+          <option value="all">All</option>
+          <option value="ACT">ACT</option>
+          <option value="QLD">QLD</option>
+          <option value="NSW">NSW</option>
+          <option value="SA">SA</option>
+          <option value="WA">WA</option>
+          <option value="VIC">VIC</option>
+        </select>
+      </label>
+      <label class="filter-group" id="sortLabel">
+        Sort:
+        <select id="sortSelect">
+          <option value="nameAsc">Name A to Z</option>
+          <option value="nameDesc">Name Z to A</option>
+          <option value="dateNew">Date Added Newest</option>
+          <option value="dateOld">Date Added Oldest</option>
+        </select>
+      </label>
+      <div id="candidateCount" class="candidate-count">Number of Candidates: 0</div>
+      <div class="bulk-actions">
+        <button id="markSelectedCompleteBtn" class="secondary-btn">Mark Selected Completed</button>
+        <button id="deleteSelectedBtn" class="secondary-btn delete-btn">Delete Selected</button>
+      </div>
+    </section>
+
+    <section id="trackerTable" class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAllCheckbox" title="Select all candidates" /></th>
+            <th>QC Notes</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>State</th>
+            <th>Status</th>
+            <th>Risk Assessment</th>
+            <th>Missing Documents</th>
+            <th>Required Docs</th>
+            <th>Compliance Notes</th>
+            <th>Afterhours Staff Notes</th>
+            <th>Date Added</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="trackerTableBody"></tbody>
+      </table>
+    </section>
+
+    <section id="archiveSummary" class="archive-summary">
+      <div class="archive-card">
+        <div class="archive-card-header">
+          <h3>Completed by State</h3>
+          <button id="completedHistoryBtn" class="secondary-btn history-btn">View History</button>
+        </div>
+        <div id="completedByState"></div>
+      </div>
+      <div class="archive-card">
+        <div class="archive-card-header">
+          <h3>Deleted Candidates</h3>
+          <button id="deletedHistoryBtn" class="secondary-btn history-btn">View History</button>
+        </div>
+        <div id="deletedByState"></div>
+      </div>
+    </section>
+
+    <section id="stateRequirements" class="state-summary">
+      <div class="state-header">
+        <h2>State Requirements</h2>
+      </div>
+      <div id="stateDocsList" class="state-docs-grid"></div>
+    </section>
+
+    <section id="dailyReport" class="daily-report">
+      <div class="report-header">
+        <h2>Daily Outlook Report</h2>
+        <button id="copyReportBtn" class="secondary-btn">Copy to Clipboard</button>
+      </div>
+      <textarea id="dailyReportText" class="report-textarea" readonly></textarea>
+    </section>
+    </main>
+  </div>
+
+  <template id="candidateRowTemplate">
+    <tr>
+      <td class="select-cell"><input type="checkbox" class="row-select" /></td>
+      <td class="qc-notes-cell"></td>
+      <td class="name-cell"></td>
+      <td class="role-cell"></td>
+      <td class="state-cell"></td>
+      <td class="status-cell"></td>
+      <td class="risk-cell"></td>
+      <td class="docs-cell"></td>
+      <td class="required-docs-cell"></td>
+      <td class="compliance-notes-cell"></td>
+      <td class="afterhours-notes-cell"></td>
+      <td class="date-cell"></td>
+      <td class="actions-cell">
+        <div class="action-group">
+          <button class="toggle-btn">Mark Completed</button>
+          <button class="edit-btn secondary-btn">Edit</button>
+          <button class="delete-btn secondary-btn">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <script src="js/script.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
+</body>
+</html>

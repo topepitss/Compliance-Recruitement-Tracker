@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- PAGE SETUP -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | SustainHealth Compliance Tracker</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <!-- LOGIN PAGE -->
+  <main class="login-page">
+    <section class="login-panel" aria-labelledby="loginTitle">
+      <!-- BRAND AREA -->
+      <div class="login-brand">
+        <a class="brand-link" href="index.html">
+          <span class="brand-mark">SH</span>
+          <span>SustainHealth</span>
+        </a>
+        <h1 id="loginTitle">Secure tracker login</h1>
+        <p>Sign in before viewing candidate documents, notes, and compliance records.</p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="login-form">
+        <label>
+          Username
+          <input name="username" type="text" autocomplete="username" required />
+        </label>
+
+        <label>
+          Password
+          <input name="password" type="password" autocomplete="current-password" required />
+        </label>
+
+        <p id="loginError" class="login-error" hidden></p>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <p class="auth-switch">
+        Need a private account?
+        <a href="register.html">Register with verification</a>
+      </p>
+
+      <!-- SECURITY NOTE -->
+      <p class="login-note">
+        Access is protected by server login. Do not share credentials or the private verification code.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

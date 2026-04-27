@@ -1,0 +1,11 @@
+node_modules/
+logs/
+.env
+
+# Runtime data. The server recreates these files locally.
+data/*.json
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/

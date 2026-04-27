@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | SustainHealth</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <script src="js/auth.js" defer></script>
+  <script src="js/admin.js" defer></script>
+</head>
+<body data-protected="true" data-admin-page="true">
+  <main class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="brand" href="tracker.html">
+        <span class="brand-mark">SH</span>
+        <span>
+          <strong>SustainHealth</strong>
+          <small>Super Admin</small>
+        </span>
+      </a>
+
+      <nav class="admin-nav" aria-label="Admin navigation">
+        <a href="#overview">Overview</a>
+        <a href="#users">Users</a>
+        <a href="#records">Records</a>
+        <a href="#activity">History</a>
+        <a href="tracker.html">Tracker</a>
+      </nav>
+
+      <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
+    </aside>
+
+    <section class="admin-content">
+      <header class="admin-hero" id="overview">
+        <div>
+          <p class="eyebrow">Confidential access control</p>
+          <h1>Admin dashboard</h1>
+          <p>Monitor users, account status, and recent website activity from one secure place.</p>
+        </div>
+        <a class="primary-link" href="register.html">Register User</a>
+      </header>
+
+      <section class="guidelines-panel" aria-labelledby="guidelinesTitle">
+        <div>
+          <p class="eyebrow">Guidelines</p>
+          <h2 id="guidelinesTitle">Before giving access</h2>
+        </div>
+        <ul>
+          <li>Only share the private verification code with trusted staff.</li>
+          <li>Save Role applies role/status changes. Disable User blocks login and tracker data access.</li>
+          <li>Disable users immediately when they no longer need tracker access.</li>
+          <li>Use Reset Pass when a user forgets their password, then give them the new password privately.</li>
+          <li>Review history often for failed logins, registrations, and tracker saves.</li>
+          <li>Use admin roles only for people who should manage other users.</li>
+        </ul>
+      </section>
+
+      <section class="stats-grid" aria-label="Admin statistics">
+        <article><span id="totalUsers">0</span><p>Total users</p></article>
+        <article><span id="activeUsers">0</span><p>Approved users</p></article>
+        <article><span id="adminUsers">0</span><p>Admins</p></article>
+        <article><span id="candidates">0</span><p>Active records</p></article>
+        <article><span id="archivedCandidates">0</span><p>Deleted records</p></article>
+        <article><span id="activityEvents">0</span><p>History events</p></article>
+      </section>
+
+      <section id="users" class="admin-card">
+        <div class="section-heading">
+          <p class="eyebrow">Users</p>
+          <h2>Account access</h2>
+        </div>
+        <div id="usersTable" class="users-table" aria-live="polite"></div>
+      </section>
+
+      <section id="records" class="admin-card">
+        <div class="section-heading">
+          <p class="eyebrow">Records</p>
+          <h2>Completed and deleted details</h2>
+        </div>
+        <div class="records-grid">
+          <div>
+            <h3>Completed</h3>
+            <div id="completedRecords" class="record-list" aria-live="polite"></div>
+          </div>
+          <div>
+            <h3>Deleted</h3>
+            <div id="deletedRecords" class="record-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="activity" class="admin-card">
+        <div class="section-heading">
+          <p class="eyebrow">History</p>
+          <h2>Recent activity</h2>
+        </div>
+        <div id="activityList" class="activity-list" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
