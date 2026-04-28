@@ -2,8 +2,10 @@ node_modules/
 logs/
 .env
 
-# Runtime data. The server recreates these files locally.
+# Runtime tracker data. Accounts are tracked separately so they do not reset on deploy.
 data/*.json
+!data/users.json
+!data/users.backup.json
 
 # OS/editor noise
 .DS_Store

@@ -623,6 +623,39 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
+    if (request.url.startsWith('/api/admin/users') && request.method === 'DELETE') {
+      const session = await getActiveSession(request);
+      if (!isAdminSession(session)) {
+        sendJson(response, 403, { error: 'Admin access required' });
+        return;
+      }
+
+      const body = await readRequestBody(request);
+      const username = sanitizeUsername(body.username);
+      const users = await ensureDefaultSuperAdmin();
+      const userIndex = users.findIndex((item) => item.username === username);
+
+      if (userIndex === -1) {
+        sendJson(response, 404, { ok: false, message: 'User not found.' });
+        return;
+      }
+
+      if (username === 'admin' || username === session.username) {
+        sendJson(response, 400, { ok: false, message: 'You cannot delete this account.' });
+        return;
+      }
+
+      const [deletedUser] = users.splice(userIndex, 1);
+      await writeUsers(users);
+      await recordActivity(request, {
+        username: session.username,
+        action: 'user_delete',
+        details: `Deleted account ${deletedUser.username}.`
+      });
+      sendJson(response, 200, { ok: true });
+      return;
+    }
+
     if (request.url.startsWith('/api/data') && request.method === 'GET') {
       if (!(await getActiveSession(request))) {
         sendJson(response, 401, { error: 'Login required or account disabled' });

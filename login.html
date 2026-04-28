@@ -7,11 +7,16 @@
   <title>Login | SustainHealth Compliance Tracker</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/login.css" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="js/auth.js" defer></script>
+  <script src="js/auth-visual.jsx" type="text/babel" data-presets="react" defer></script>
 </head>
-<body>
+<body data-auth-page="login">
   <!-- LOGIN PAGE -->
   <main class="login-page">
+    <section id="authVisual" class="auth-visual" aria-label="SustainHealth tracker preview"></section>
     <section class="login-panel" aria-labelledby="loginTitle">
       <!-- BRAND AREA -->
       <div class="login-brand">
@@ -27,13 +32,13 @@
       <form id="loginForm" class="login-form">
         <label>
           Username
-          <input name="username" type="text" autocomplete="username" required />
+          <input name="username" type="text" autocomplete="username" placeholder="Enter username" required />
         </label>
 
         <label>
           Password
           <span class="password-field">
-            <input name="password" type="password" autocomplete="current-password" required />
+            <input name="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
             <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">Show</button>
           </span>
         </label>

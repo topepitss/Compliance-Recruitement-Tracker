@@ -496,6 +496,17 @@ a {
   color: #ffffff;
 }
 
+.row-actions .danger-action {
+  border-color: rgba(201, 88, 80, 0.28);
+  background: rgba(201, 88, 80, 0.1);
+  color: var(--danger);
+}
+
+.row-actions .danger-action:hover {
+  background: rgba(201, 88, 80, 0.16);
+  color: #9f342e;
+}
+
 .row-actions button:disabled,
 .user-row select:disabled {
   opacity: 0.55;

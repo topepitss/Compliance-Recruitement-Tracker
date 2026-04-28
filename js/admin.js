@@ -124,7 +124,19 @@ function renderUsers(users) {
       alert(`Password updated for ${user.username}.`);
     });
 
-    actions.append(saveBtn, toggleBtn, resetBtn);
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'danger-action';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.title = 'Permanently delete this user account.';
+    deleteBtn.disabled = user.username === 'admin';
+    deleteBtn.addEventListener('click', async () => {
+      const confirmed = confirm(`Delete ${user.username}? This cannot be undone.`);
+      if (!confirmed) return;
+      await deleteUser(user.username);
+    });
+
+    actions.append(saveBtn, toggleBtn, resetBtn, deleteBtn);
     row.append(name, roleWrap, status, lastLogin, actions);
     usersTable.appendChild(row);
   });
@@ -195,6 +207,14 @@ async function updateUser(username, updates) {
   await requestJson('/api/admin/users', {
     method: 'PATCH',
     body: JSON.stringify({ username, ...updates })
+  });
+  await loadDashboard();
+}
+
+async function deleteUser(username) {
+  await requestJson('/api/admin/users', {
+    method: 'DELETE',
+    body: JSON.stringify({ username })
   });
   await loadDashboard();
 }

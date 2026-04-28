@@ -1196,15 +1196,15 @@ tbody tr:hover {
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.32rem;
-  min-height: 28px;
+  gap: 0.34rem;
+  min-height: 27px;
   border-radius: 8px;
-  padding: 0.28rem 0.48rem;
+  padding: 0.28rem 0.5rem;
   border: 1px solid transparent;
   font-size: 0.7rem;
   font-weight: 900;
   white-space: nowrap;
-  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.06);
+  box-shadow: none;
 }
 
 .status-dot-mini {
@@ -1217,15 +1217,13 @@ tbody tr:hover {
 
 .status-pending {
   border-color: rgba(183, 121, 31, 0.2);
-  background:
-    linear-gradient(180deg, rgba(255, 251, 235, 0.98), rgba(254, 243, 199, 0.82));
+  background: #fff8e7;
   color: #a16207;
 }
 
 .status-completed {
   border-color: rgba(31, 143, 95, 0.2);
-  background:
-    linear-gradient(180deg, rgba(240, 253, 244, 0.98), rgba(220, 252, 231, 0.86));
+  background: #e9f9f0;
   color: var(--success);
 }
 
@@ -1235,7 +1233,7 @@ tbody tr:hover {
   width: 100%;
   min-width: 0;
   border-radius: 8px;
-  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.06);
+  box-shadow: none;
 }
 
 .risk-field::after {
@@ -1264,9 +1262,9 @@ tbody tr:hover {
 }
 
 .risk-select {
-  min-height: 30px;
+  min-height: 31px;
   appearance: none;
-  padding: 0.32rem 1.35rem 0.32rem 0.5rem;
+  padding: 0.34rem 1.45rem 0.34rem 0.55rem;
   border-radius: 8px;
   font-size: clamp(0.66rem, 0.62vw, 0.72rem);
   font-weight: 850;
@@ -1276,32 +1274,28 @@ tbody tr:hover {
 
 .risk-select.risk-yellow,
 .risk-field.risk-yellow {
-  background:
-    linear-gradient(180deg, rgba(255, 251, 235, 0.98), rgba(254, 243, 199, 0.78));
+  background: #fff8e7;
   color: #b7791f;
   border-color: rgba(183, 121, 31, 0.28);
 }
 
 .risk-select.risk-orange,
 .risk-field.risk-orange {
-  background:
-    linear-gradient(180deg, rgba(255, 247, 237, 0.98), rgba(254, 215, 170, 0.68));
+  background: #fff1dd;
   color: #b45309;
   border-color: rgba(217, 119, 6, 0.28);
 }
 
 .risk-select.risk-red,
 .risk-field.risk-red {
-  background:
-    linear-gradient(180deg, rgba(254, 242, 242, 0.98), rgba(254, 226, 226, 0.78));
+  background: #fff0f0;
   color: var(--error);
   border-color: rgba(194, 65, 59, 0.26);
 }
 
 .risk-select.risk-green,
 .risk-field.risk-green {
-  background:
-    linear-gradient(180deg, rgba(240, 253, 244, 0.98), rgba(220, 252, 231, 0.78));
+  background: #e9f9f0;
   color: var(--success);
   border-color: rgba(31, 143, 95, 0.26);
 }

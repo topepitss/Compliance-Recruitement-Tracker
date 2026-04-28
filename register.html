@@ -6,10 +6,15 @@
   <title>Register | SustainHealth Compliance Tracker</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/login.css" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="js/auth.js" defer></script>
+  <script src="js/auth-visual.jsx" type="text/babel" data-presets="react" defer></script>
 </head>
-<body>
+<body data-auth-page="register">
   <main class="login-page">
+    <section id="authVisual" class="auth-visual" aria-label="SustainHealth private access preview"></section>
     <section class="login-panel register-panel" aria-labelledby="registerTitle">
       <div class="login-brand">
         <a class="brand-link" href="index.html">
@@ -35,13 +40,13 @@
       <form id="registerForm" class="login-form">
         <label>
           Username
-          <input name="username" type="text" autocomplete="username" minlength="3" maxlength="32" required />
+          <input name="username" type="text" autocomplete="username" minlength="3" maxlength="32" placeholder="Choose username" required />
         </label>
 
         <label>
           Password
           <span class="password-field">
-            <input name="password" type="password" autocomplete="new-password" minlength="8" required />
+            <input name="password" type="password" autocomplete="new-password" minlength="8" placeholder="Minimum 8 characters" required />
             <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">Show</button>
           </span>
         </label>
@@ -49,7 +54,7 @@
         <label>
           Confirm password
           <span class="password-field">
-            <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required />
+            <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Repeat password" required />
             <button type="button" class="password-toggle" data-password-toggle aria-label="Show confirm password">Show</button>
           </span>
         </label>
@@ -57,7 +62,7 @@
         <label>
           Private verification code
           <span class="password-field">
-            <input name="verificationCode" type="password" autocomplete="off" required />
+            <input name="verificationCode" type="password" autocomplete="off" placeholder="Private code" required />
             <button type="button" class="password-toggle" data-password-toggle aria-label="Show private verification code">Show</button>
           </span>
         </label>

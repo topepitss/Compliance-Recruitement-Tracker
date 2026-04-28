@@ -53,6 +53,6 @@ npm start
 
 ## Important
 
-The `data/*.json` files are ignored by Git because they are local runtime data. When the server starts, it creates local data files automatically. The server also writes `users.backup.json` locally so it can recover accounts if `users.json` is accidentally damaged. If the app is deployed on a host with temporary storage, use `DATA_DIR` with persistent storage or accounts can disappear after redeploys.
+Tracker records and activity logs are local runtime data and are ignored by Git. Account files, `data/users.json` and `data/users.backup.json`, are kept separately so registered accounts do not reset just because code changes are deployed. For a live production setup, a real database or a persistent `DATA_DIR` is still the safest option.
 
 This project is good for a portfolio or school project. For real production use, move the JSON data into a database and change the default admin password.

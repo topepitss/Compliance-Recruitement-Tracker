@@ -1,0 +1,10 @@
+[
+  {
+    "username": "admin",
+    "passwordHash": "25a3065b8066cab95c110220e3bf819d:115162b4a5a0a5b7d7c7069a2804d8f2c747d58c30b0d66905096aeb3ad74f00001a17238d19e2f0e9cd92b89393df3138f7c408419e2f468e806d3808028542",
+    "role": "superadmin",
+    "approved": true,
+    "createdAt": "2026-04-27T17:02:55.045Z",
+    "lastLoginAt": "2026-04-27T18:03:26.061Z"
+  }
+]
