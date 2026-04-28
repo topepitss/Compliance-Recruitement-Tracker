@@ -629,13 +629,17 @@ function getRiskBadge(riskAssessment, candidateId) {
     'Not Needed': 'risk-green'
   };
   const riskClass = classMap[riskAssessment] || '';
-  return `<select class="risk-select ${riskClass}" onchange="updateRiskFromSelect(this, '${escapeAttribute(candidateId)}')">
-    ${riskAssessmentOptions.map(option => {
-      const optClass = classMap[option] || '';
-      const safeOption = escapeAttribute(option);
-      return `<option value="${safeOption}" class="${optClass}" ${option === riskAssessment ? 'selected' : ''}>${escapeHTML(option)}</option>`;
-    }).join('')}
-  </select>`;
+  return `
+    <span class="risk-field ${riskClass}">
+      <select class="risk-select ${riskClass}" onchange="updateRiskFromSelect(this, '${escapeAttribute(candidateId)}')">
+        ${riskAssessmentOptions.map(option => {
+          const optClass = classMap[option] || '';
+          const safeOption = escapeAttribute(option);
+          return `<option value="${safeOption}" class="${optClass}" ${option === riskAssessment ? 'selected' : ''}>${escapeHTML(option)}</option>`;
+        }).join('')}
+      </select>
+    </span>
+  `;
 }
 
 function renderRows() {
@@ -685,6 +689,7 @@ function renderRows() {
 
     statusCell.innerHTML = `
       <span class="status-pill ${isCompleted ? 'status-completed' : 'status-pending'}">
+        <span class="status-dot-mini" aria-hidden="true"></span>
         ${isCompleted ? 'Completed' : 'Pending'}
       </span>
     `;
@@ -692,7 +697,7 @@ function renderRows() {
     riskCell.innerHTML = getRiskBadge(candidate.riskAssessment, candidate.id);
 
     docsCell.innerHTML = candidate.missingDocs.length
-      ? `<span class="docs-text">${escapeHTML(candidate.missingDocs.join(', '))}</span>`
+      ? `<span class="docs-chip-list">${candidate.missingDocs.map(doc => `<span class="docs-chip">${escapeHTML(doc)}</span>`).join('')}</span>`
       : `<span class="docs-none">None</span>`;
 
     const allRequiredDocs = candidate.states
@@ -748,7 +753,7 @@ function renderRows() {
       // Toggle button state depends on missing documents
       if (candidate.missingDocs.length > 0) {
         actualToggleBtn.disabled = true;
-        actualToggleBtn.textContent = 'Pending (Missing Docs)';
+        actualToggleBtn.textContent = 'Missing docs';
         actualToggleBtn.classList.remove('completed');
       } else {
         actualToggleBtn.disabled = false;
@@ -1093,6 +1098,8 @@ function updateRiskFromSelect(selectElement, candidateId) {
 
   // Update dropdown color immediately
   selectElement.className = `risk-select ${classMap[selectedValue] || ''}`;
+  const riskField = selectElement.closest('.risk-field');
+  if (riskField) riskField.className = `risk-field ${classMap[selectedValue] || ''}`;
   addToHistory(`Updated risk assessment for ${candidate.name}`);
   saveToLocalStorage();
 }
