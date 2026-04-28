@@ -118,7 +118,7 @@ async function logout() {
   } finally {
     clearLocalSession();
     localStorage.setItem(AUTH_CONFIG.logoutKey, String(Date.now()));
-    window.location.href = 'index.html';
+    window.location.replace('index.html');
   }
 }
 
@@ -211,6 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', logout);
   }
+
+  window.addEventListener('pageshow', (event) => {
+    if (!protectedPage) return;
+
+    if (event.persisted || localStorage.getItem(AUTH_CONFIG.sessionKey) !== 'active') {
+      requireLogin();
+    }
+  });
 
   if (passwordForm) {
     passwordForm.addEventListener('submit', async (event) => {

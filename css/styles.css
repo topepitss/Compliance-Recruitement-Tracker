@@ -1015,7 +1015,7 @@ textarea:focus-visible {
 
 table {
   width: 100%;
-  min-width: 0;
+  min-width: 1320px;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -1032,10 +1032,10 @@ thead {
 th,
 td {
   text-align: left;
-  padding: 0.58rem 0.46rem;
+  padding: 0.72rem 0.58rem;
   border-bottom: 1px solid var(--border);
   font-size: 0.78rem;
-  vertical-align: top;
+  vertical-align: middle;
   overflow-wrap: anywhere;
 }
 
@@ -1056,7 +1056,7 @@ td:nth-child(1) {
 
 th:nth-child(2),
 td:nth-child(2) {
-  width: 7%;
+  width: 8%;
 }
 
 th:nth-child(3),
@@ -1071,24 +1071,27 @@ td:nth-child(4) {
 
 th:nth-child(5),
 td:nth-child(5) {
-  width: 5%;
+  width: 4.5%;
 }
 
 th:nth-child(6),
 td:nth-child(6) {
-  width: 7%;
+  width: 7.5%;
 }
 
 th:nth-child(7),
 td:nth-child(7) {
-  width: 8%;
+  width: 9.5%;
 }
 
 th:nth-child(8),
-td:nth-child(8),
+td:nth-child(8) {
+  width: 10%;
+}
+
 th:nth-child(9),
 td:nth-child(9) {
-  width: 11%;
+  width: 10%;
 }
 
 th:nth-child(10),
@@ -1105,7 +1108,7 @@ td:nth-child(12) {
 
 th:nth-child(13),
 td:nth-child(13) {
-  width: 8%;
+  width: 9%;
 }
 
 tbody tr {
@@ -1167,19 +1170,19 @@ tbody tr:hover {
 .docs-chip-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 
 .docs-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0.34rem 0.5rem;
+  min-height: 24px;
+  padding: 0.28rem 0.42rem;
   border: 1px solid rgba(23, 107, 135, 0.14);
   border-radius: 8px;
   background: rgba(23, 107, 135, 0.07);
   color: #344154;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 760;
   line-height: 1.25;
 }
@@ -1187,20 +1190,20 @@ tbody tr:hover {
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.42rem;
-  min-height: 32px;
+  gap: 0.32rem;
+  min-height: 28px;
   border-radius: 8px;
-  padding: 0.38rem 0.62rem;
+  padding: 0.28rem 0.48rem;
   border: 1px solid transparent;
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 900;
   white-space: nowrap;
   box-shadow: 0 8px 18px rgba(23, 32, 51, 0.06);
 }
 
 .status-dot-mini {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
   background: currentColor;
   box-shadow: 0 0 0 4px color-mix(in srgb, currentColor, transparent 84%);
@@ -1223,8 +1226,8 @@ tbody tr:hover {
 .risk-field {
   position: relative;
   display: inline-flex;
-  width: min(150px, 100%);
-  min-width: 122px;
+  width: 100%;
+  min-width: 0;
   border-radius: 8px;
   box-shadow: 0 8px 18px rgba(23, 32, 51, 0.06);
 }
@@ -1233,9 +1236,9 @@ tbody tr:hover {
   content: "";
   position: absolute;
   top: 50%;
-  right: 0.72rem;
-  width: 7px;
-  height: 7px;
+  right: 0.55rem;
+  width: 6px;
+  height: 6px;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: translateY(-64%) rotate(45deg);
@@ -1255,11 +1258,11 @@ tbody tr:hover {
 }
 
 .risk-select {
-  min-height: 36px;
+  min-height: 30px;
   appearance: none;
-  padding: 0.42rem 1.8rem 0.42rem 0.62rem;
+  padding: 0.32rem 1.35rem 0.32rem 0.5rem;
   border-radius: 8px;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 850;
   cursor: pointer;
   box-shadow: none;
@@ -1298,17 +1301,18 @@ tbody tr:hover {
 }
 
 .action-group {
-  display: grid;
-  gap: 0.38rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
   min-width: 0;
 }
 
 .action-group button {
-  width: 100%;
-  min-height: 34px;
-  padding: 0.42rem 0.48rem;
+  flex: 1 1 70px;
+  min-height: 30px;
+  padding: 0.34rem 0.42rem;
   border-radius: 8px;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 900;
 }
 

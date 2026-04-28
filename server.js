@@ -8,6 +8,7 @@ const PUBLIC_DIR = __dirname;
 const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, 'data'));
 const DATABASE_PATH = path.join(DATA_DIR, 'database.json');
 const USERS_PATH = path.join(DATA_DIR, 'users.json');
+const USERS_BACKUP_PATH = path.join(DATA_DIR, 'users.backup.json');
 const ACTIVITY_PATH = path.join(DATA_DIR, 'activity.json');
 const DEFAULT_REGISTER_CODE = 'BHEL-PRIVATE-2026';
 const REGISTER_CODES = new Set([
@@ -154,7 +155,13 @@ async function readUsers() {
     const users = JSON.parse(raw);
     return Array.isArray(users) ? users : [];
   } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
+    const backupUsers = await readUsersBackup();
+    if (backupUsers) {
+      await writeUsers(backupUsers);
+      return backupUsers;
+    }
+
+    if (error.code !== 'ENOENT' && error instanceof SyntaxError === false) throw error;
     const defaultUsers = [
       {
         username: 'admin',
@@ -169,9 +176,21 @@ async function readUsers() {
   }
 }
 
+async function readUsersBackup() {
+  try {
+    const raw = await fs.readFile(USERS_BACKUP_PATH, 'utf8');
+    const users = JSON.parse(raw);
+    return Array.isArray(users) && users.length ? users : null;
+  } catch (error) {
+    return null;
+  }
+}
+
 async function writeUsers(users) {
   await fs.mkdir(path.dirname(USERS_PATH), { recursive: true });
-  await fs.writeFile(USERS_PATH, `${JSON.stringify(users, null, 2)}\n`, 'utf8');
+  const payload = `${JSON.stringify(users, null, 2)}\n`;
+  await fs.writeFile(USERS_PATH, payload, 'utf8');
+  await fs.writeFile(USERS_BACKUP_PATH, payload, 'utf8');
   return users;
 }
 

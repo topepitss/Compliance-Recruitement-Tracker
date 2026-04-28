@@ -753,11 +753,11 @@ function renderRows() {
       // Toggle button state depends on missing documents
       if (candidate.missingDocs.length > 0) {
         actualToggleBtn.disabled = true;
-        actualToggleBtn.textContent = 'Missing docs';
+        actualToggleBtn.textContent = 'Docs';
         actualToggleBtn.classList.remove('completed');
       } else {
         actualToggleBtn.disabled = false;
-        actualToggleBtn.textContent = isCompleted ? 'Mark Pending' : 'Mark Completed';
+        actualToggleBtn.textContent = isCompleted ? 'Pending' : 'Done';
         actualToggleBtn.classList.toggle('completed', isCompleted);
       }
 
