@@ -1006,12 +1006,14 @@ function renderRows() {
         actualToggleBtn.classList.remove('completed');
       } else if (qcBlock) {
         actualToggleBtn.disabled = false;
-        actualToggleBtn.textContent = 'QC';
+        actualToggleBtn.textContent = 'Pending';
+        actualToggleBtn.title = 'QC date blocks completion for this candidate.';
         actualToggleBtn.classList.remove('completed');
         actualToggleBtn.classList.add('qc-blocked');
       } else {
         actualToggleBtn.disabled = false;
         actualToggleBtn.textContent = isCompleted ? 'Pending' : 'Done';
+        actualToggleBtn.title = '';
         actualToggleBtn.classList.toggle('completed', isCompleted);
         actualToggleBtn.classList.remove('qc-blocked');
       }
