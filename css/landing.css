@@ -36,6 +36,11 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
+img,
+svg {
+  max-width: 100%;
+}
+
 body::selection {
   background: var(--accent-soft);
 }
@@ -121,6 +126,7 @@ a {
   justify-content: flex-end;
   align-items: center;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .site-nav a {
@@ -800,6 +806,8 @@ a {
 
   .hero-section {
     min-height: 88vh;
+    padding-right: clamp(1rem, 4vw, 2rem);
+    padding-left: clamp(1rem, 4vw, 2rem);
     background:
       linear-gradient(180deg, rgba(251, 250, 246, 0.98) 0%, rgba(251, 250, 246, 0.9) 68%, rgba(251, 250, 246, 0.7) 100%),
       url("../assets/landing-hero.png") 62% center / cover no-repeat;
@@ -830,8 +838,18 @@ a {
 
   .hero-section {
     min-height: auto;
-    padding-top: 7.4rem;
-    padding-bottom: 5rem;
+    padding-top: 6.8rem;
+    padding-bottom: 4.25rem;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.25rem, 15vw, 3.55rem);
+    line-height: 1;
+  }
+
+  .hero-copy {
+    font-size: 1rem;
+    line-height: 1.62;
   }
 
   .hero-actions {
@@ -847,11 +865,55 @@ a {
     margin-top: -3rem;
   }
 
+  .preview-section,
+  .section {
+    padding-right: 0.85rem;
+    padding-left: 0.85rem;
+  }
+
+  .preview-toolbar h2,
+  .section-heading h2,
+  .report-panel h2 {
+    font-size: clamp(1.8rem, 11vw, 2.45rem);
+  }
+
+  .metric-card,
+  .feature-card,
+  .summary-panel,
+  .table-panel,
+  .timeline-item,
+  .report-panel {
+    box-shadow: 0 10px 28px rgba(23, 49, 59, 0.08);
+  }
+
   .timeline-item {
     grid-template-columns: 1fr;
   }
 
   .record-row {
     grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-text strong {
+    font-size: 0.95rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.08rem;
+  }
+
+  .preview-shell {
+    padding: 0.75rem;
   }
 }
