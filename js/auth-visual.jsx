@@ -23,26 +23,26 @@ function AuthVisual() {
 
   return (
     <div className="auth-visual-inner">
-      <div className="auth-preview-top">
-        <span className="auth-preview-mark">SH</span>
-        <span>Live tracker</span>
+      <div className="auth-art-frame">
+        <img src="assets/auth-visual.png" alt="" />
       </div>
-      <h2>{content.title}</h2>
-      <p>{content.copy}</p>
-      <div className="auth-preview-grid">
-        <article>
-          <strong>{content.stat}</strong>
-          <span>{content.label}</span>
-        </article>
-        <article>
-          <strong>6</strong>
-          <span>state checks</span>
-        </article>
-      </div>
-      <div className="auth-preview-list" aria-hidden="true">
-        <span><i></i> Document review</span>
-        <span><i></i> Risk status</span>
-        <span><i></i> Admin history</span>
+      <div className="auth-visual-copy">
+        <div className="auth-preview-top">
+          <span className="auth-preview-mark">SH</span>
+          <span>Live tracker</span>
+        </div>
+        <h2>{content.title}</h2>
+        <p>{content.copy}</p>
+        <div className="auth-preview-grid">
+          <article>
+            <strong>{content.stat}</strong>
+            <span>{content.label}</span>
+          </article>
+          <article>
+            <strong>6</strong>
+            <span>state checks</span>
+          </article>
+        </div>
       </div>
     </div>
   );
