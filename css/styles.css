@@ -1007,7 +1007,8 @@ textarea:focus-visible {
 }
 
 .table-wrap {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   max-height: 66vh;
   background: var(--surface);
   width: 100%;
@@ -1015,7 +1016,7 @@ textarea:focus-visible {
 
 table {
   width: 100%;
-  min-width: 1320px;
+  min-width: 0;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -1032,16 +1033,17 @@ thead {
 th,
 td {
   text-align: left;
-  padding: 0.72rem 0.58rem;
+  padding: 0.72rem 0.5rem;
   border-bottom: 1px solid var(--border);
-  font-size: 0.78rem;
+  font-size: clamp(0.72rem, 0.7vw, 0.82rem);
   vertical-align: middle;
   overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 th {
   color: #445066;
-  font-size: 0.68rem;
+  font-size: clamp(0.62rem, 0.62vw, 0.72rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -1051,64 +1053,64 @@ th {
 
 th:nth-child(1),
 td:nth-child(1) {
-  width: 30px;
+  width: 2.5%;
 }
 
 th:nth-child(2),
 td:nth-child(2) {
-  width: 8%;
+  width: 7%;
 }
 
 th:nth-child(3),
 td:nth-child(3) {
-  width: 8%;
+  width: 7.5%;
 }
 
 th:nth-child(4),
 td:nth-child(4) {
-  width: 8%;
+  width: 7%;
 }
 
 th:nth-child(5),
 td:nth-child(5) {
-  width: 4.5%;
+  width: 4%;
 }
 
 th:nth-child(6),
 td:nth-child(6) {
-  width: 7.5%;
+  width: 6.8%;
 }
 
 th:nth-child(7),
 td:nth-child(7) {
-  width: 9.5%;
+  width: 8.8%;
 }
 
 th:nth-child(8),
 td:nth-child(8) {
-  width: 10%;
+  width: 9.5%;
 }
 
 th:nth-child(9),
 td:nth-child(9) {
-  width: 10%;
+  width: 13.5%;
 }
 
 th:nth-child(10),
 td:nth-child(10),
 th:nth-child(11),
 td:nth-child(11) {
-  width: 9%;
+  width: 8%;
 }
 
 th:nth-child(12),
 td:nth-child(12) {
-  width: 6%;
+  width: 5.6%;
 }
 
 th:nth-child(13),
 td:nth-child(13) {
-  width: 9%;
+  width: 12.8%;
 }
 
 tbody tr {
@@ -1151,6 +1153,10 @@ tbody tr:hover {
   width: auto;
   white-space: normal;
   word-break: break-word;
+}
+
+.required-docs-cell {
+  line-height: 1.45;
 }
 
 .docs-text,
@@ -1262,7 +1268,7 @@ tbody tr:hover {
   appearance: none;
   padding: 0.32rem 1.35rem 0.32rem 0.5rem;
   border-radius: 8px;
-  font-size: 0.72rem;
+  font-size: clamp(0.66rem, 0.62vw, 0.72rem);
   font-weight: 850;
   cursor: pointer;
   box-shadow: none;
@@ -1308,11 +1314,11 @@ tbody tr:hover {
 }
 
 .action-group button {
-  flex: 1 1 70px;
+  flex: 1 1 54px;
   min-height: 30px;
   padding: 0.34rem 0.42rem;
   border-radius: 8px;
-  font-size: 0.68rem;
+  font-size: clamp(0.62rem, 0.58vw, 0.68rem);
   font-weight: 900;
 }
 
