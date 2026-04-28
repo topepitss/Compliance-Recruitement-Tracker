@@ -14,6 +14,14 @@ const stateRequirements = {
 
 const riskAssessmentOptions = ['In-Progress', 'Cleared(CDN)', 'Not Cleared', 'Not Needed'];
 const allStates = ['ACT', 'QLD', 'NSW', 'SA', 'WA', 'VIC'];
+const stateVisuals = {
+  ACT: { label: 'Capital', color: '#176b87' },
+  QLD: { label: 'Coast', color: '#2f9e71' },
+  NSW: { label: 'Harbour', color: '#2563eb' },
+  SA: { label: 'South', color: '#b7791f' },
+  WA: { label: 'West', color: '#7c3aed' },
+  VIC: { label: 'Metro', color: '#c2413b' }
+};
 
 let history = [];
 let databaseEnabled = false;
@@ -112,7 +120,7 @@ function buildArchiveHistoryRows(items, dateField) {
     const itemsForDate = items.filter(item => (item[dateField] || 'No date saved') === dateKey);
     const stateCounts = allStates.map(state => {
       const count = itemsForDate.filter(candidate => candidate.states.includes(state)).length;
-      return `<span><strong>${escapeHTML(state)}:</strong> ${count}</span>`;
+      return getStateHistoryChip(state, count);
     }).join('');
     const label = dateKey === today
       ? 'Today'
@@ -127,6 +135,17 @@ function buildArchiveHistoryRows(items, dateField) {
       </li>
     `;
   }).join('');
+}
+
+function getStateHistoryChip(state, count) {
+  const visual = stateVisuals[state] || stateVisuals.ACT;
+  return `
+    <span class="state-history-chip" style="--state-color: ${escapeAttribute(visual.color)}">
+      <i>${escapeHTML(state)}</i>
+      <span>${escapeHTML(visual.label)}</span>
+      <strong>${count}</strong>
+    </span>
+  `;
 }
 
 // Auto-save functions
@@ -297,12 +316,15 @@ function showCompletedHistory() {
         li { background: #f1f7ff; border: 1px solid rgba(0,102,204,0.12); border-radius: 8px; padding: 0.85rem 1rem; }
         .date-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-weight: 700; margin-bottom: 0.65rem; }
         .date-row small { color: #555; font-weight: 600; }
-        .state-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem 1rem; }
-        .state-grid span { white-space: nowrap; }
+        .state-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+        .state-history-chip { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.45rem; min-height: 40px; padding: 0.45rem; border: 1px solid color-mix(in srgb, var(--state-color), transparent 72%); border-radius: 8px; background: color-mix(in srgb, var(--state-color), white 90%); }
+        .state-history-chip i { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--state-color); color: white; font-size: 0.72rem; font-style: normal; font-weight: 900; }
+        .state-history-chip span { color: #555; font-size: 0.78rem; font-weight: 700; }
+        .state-history-chip strong { color: var(--state-color); font-size: 1rem; }
         .empty-history { color: #555; }
         button { margin-top: 1rem; border: 1px solid rgba(0,102,204,0.2); background: rgba(0,102,204,0.08); color: #005bb5; border-radius: 8px; padding: 0.75rem 1.1rem; cursor: pointer; }
         button:hover { background: rgba(0,102,204,0.15); }
-        @media (max-width: 520px) { .state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 520px) { .state-grid { grid-template-columns: 1fr; } }
       </style>
     </head>
     <body>
@@ -341,12 +363,15 @@ function showDeletedHistory() {
         li { background: #fff4f4; border: 1px solid rgba(220,53,69,0.12); border-radius: 8px; padding: 0.85rem 1rem; }
         .date-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-weight: 700; margin-bottom: 0.65rem; }
         .date-row small { color: #555; font-weight: 600; }
-        .state-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem 1rem; }
-        .state-grid span { white-space: nowrap; }
+        .state-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+        .state-history-chip { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.45rem; min-height: 40px; padding: 0.45rem; border: 1px solid color-mix(in srgb, var(--state-color), transparent 72%); border-radius: 8px; background: color-mix(in srgb, var(--state-color), white 90%); }
+        .state-history-chip i { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--state-color); color: white; font-size: 0.72rem; font-style: normal; font-weight: 900; }
+        .state-history-chip span { color: #555; font-size: 0.78rem; font-weight: 700; }
+        .state-history-chip strong { color: var(--state-color); font-size: 1rem; }
         .empty-history { color: #555; }
         button { margin-top: 1rem; border: 1px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.05); color: #1a1a1a; border-radius: 8px; padding: 0.75rem 1.1rem; cursor: pointer; }
         button:hover { background: rgba(0,0,0,0.08); }
-        @media (max-width: 520px) { .state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 520px) { .state-grid { grid-template-columns: 1fr; } }
       </style>
     </head>
     <body>
@@ -403,9 +428,10 @@ function renderStateRequirements() {
     .map(state => {
       const safeState = escapeHTML(state);
       const safeRequirements = escapeHTML(getStateRequirementText(state));
+      const visual = stateVisuals[state] || stateVisuals.ACT;
       return `
         <div class="state-card" data-state="${safeState}" onmouseover="highlightState(this)" onmouseout="unhighlightState(this)" onclick="editStateInline(this, '${safeState}')">
-          <strong>${safeState}</strong>
+          <strong><span class="state-icon" style="background:${escapeAttribute(visual.color)};color:#fff">${safeState}</span>${escapeHTML(visual.label)}</strong>
           <p>${safeRequirements}</p>
         </div>
       `;
@@ -877,6 +903,25 @@ function updateCandidateRequiredDocsPreview() {
   candidateForm.elements.requiredDocs.value = getStateRequirementText(state);
 }
 
+function setCandidateSelectTone(selectElement, classMap) {
+  Object.values(classMap).forEach(className => selectElement.classList.remove(className));
+  selectElement.classList.add(classMap[selectElement.value] || '');
+}
+
+function updateCandidateFormVisuals() {
+  if (!candidateForm) return;
+  setCandidateSelectTone(candidateForm.elements.status, {
+    pending: 'status-pending-select',
+    completed: 'status-completed-select'
+  });
+  setCandidateSelectTone(candidateForm.elements.riskAssessment, {
+    'In-Progress': 'risk-in-progress-select',
+    'Cleared(CDN)': 'risk-cleared-select',
+    'Not Cleared': 'risk-not-cleared-select',
+    'Not Needed': 'risk-not-needed-select'
+  });
+}
+
 function openCandidateModal() {
   if (!candidateModal || !candidateForm) return;
   candidateForm.reset();
@@ -885,6 +930,7 @@ function openCandidateModal() {
   candidateForm.elements.riskAssessment.value = 'In-Progress';
   candidateForm.elements.status.value = 'pending';
   updateCandidateRequiredDocsPreview();
+  updateCandidateFormVisuals();
   candidateModal.hidden = false;
   document.body.classList.add('modal-open');
   window.setTimeout(() => candidateForm.elements.name.focus(), 0);
@@ -1089,7 +1135,10 @@ addRowBtn.addEventListener('click', addCandidate);
 if (candidateForm) {
   setCandidateFormOptions();
   candidateForm.elements.state.addEventListener('change', updateCandidateRequiredDocsPreview);
+  candidateForm.elements.status.addEventListener('change', updateCandidateFormVisuals);
+  candidateForm.elements.riskAssessment.addEventListener('change', updateCandidateFormVisuals);
   candidateForm.addEventListener('submit', saveCandidateFromForm);
+  updateCandidateFormVisuals();
 }
 if (closeCandidateModal) closeCandidateModal.addEventListener('click', closeCandidateFormModal);
 if (cancelCandidateModal) cancelCandidateModal.addEventListener('click', closeCandidateFormModal);

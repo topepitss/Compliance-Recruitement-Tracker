@@ -663,10 +663,10 @@ body.is-admin [data-admin-only] {
   width: min(960px, 100%);
   max-height: min(92vh, 840px);
   overflow: auto;
-  border: 1px solid rgba(219, 227, 236, 0.92);
+  border: 1px solid rgba(23, 107, 135, 0.14);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 251, 0.96)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 249, 247, 0.96)),
     var(--surface);
   box-shadow: 0 28px 90px rgba(15, 23, 42, 0.24);
 }
@@ -681,7 +681,9 @@ body.is-admin [data-admin-only] {
   align-items: start;
   padding: 1.2rem;
   border-bottom: 1px solid rgba(219, 227, 236, 0.9);
-  background: rgba(255, 255, 255, 0.96);
+  background:
+    linear-gradient(135deg, rgba(23, 107, 135, 0.1), rgba(47, 158, 113, 0.1)),
+    rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
 }
 
@@ -729,6 +731,57 @@ body.is-admin [data-admin-only] {
   padding: 1.2rem;
 }
 
+.candidate-form-hero {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgba(23, 107, 135, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(23, 107, 135, 0.96), rgba(47, 158, 113, 0.88)),
+    var(--primary);
+  color: #ffffff;
+  box-shadow: 0 14px 34px rgba(23, 107, 135, 0.18);
+}
+
+.candidate-form-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.candidate-form-icon svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.candidate-form-hero strong,
+.candidate-form-hero span {
+  display: block;
+}
+
+.candidate-form-hero strong {
+  font-size: 1.05rem;
+}
+
+.candidate-form-hero span {
+  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.45;
+}
+
 .candidate-form label {
   display: grid;
   gap: 0.45rem;
@@ -746,10 +799,35 @@ body.is-admin [data-admin-only] {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.68rem 0.78rem;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.96);
   color: var(--text);
   outline: none;
   resize: vertical;
+}
+
+.candidate-form label:focus-within {
+  color: var(--primary-strong);
+}
+
+.candidate-form select[name="status"].status-pending-select,
+.candidate-form select[name="riskAssessment"].risk-in-progress-select {
+  background: rgba(183, 121, 31, 0.12);
+  border-color: rgba(183, 121, 31, 0.28);
+  color: #9a650e;
+}
+
+.candidate-form select[name="status"].status-completed-select,
+.candidate-form select[name="riskAssessment"].risk-cleared-select,
+.candidate-form select[name="riskAssessment"].risk-not-needed-select {
+  background: rgba(31, 143, 95, 0.12);
+  border-color: rgba(31, 143, 95, 0.28);
+  color: var(--success);
+}
+
+.candidate-form select[name="riskAssessment"].risk-not-cleared-select {
+  background: rgba(194, 65, 59, 0.12);
+  border-color: rgba(194, 65, 59, 0.28);
+  color: var(--error);
 }
 
 .candidate-form textarea {
@@ -778,6 +856,18 @@ body.is-admin [data-admin-only] {
   justify-content: flex-end;
   gap: 0.7rem;
   padding-top: 0.35rem;
+}
+
+.state-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(23, 107, 135, 0.1);
+  color: var(--primary-strong);
+  font-size: 0.74rem;
+  font-weight: 950;
 }
 
 .controls label,
@@ -1233,12 +1323,10 @@ tbody tr:hover {
 .state-card strong {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 48px;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  min-width: 0;
   margin-bottom: 0.65rem;
-  padding: 0.28rem 0.55rem;
-  border-radius: 8px;
-  background: rgba(23, 107, 135, 0.1);
   color: var(--primary-strong);
   font-weight: 850;
 }
@@ -1686,6 +1774,10 @@ tr.editing td[contenteditable="true"] {
   .candidate-form-wide {
     grid-template-columns: 1fr;
     grid-column: auto;
+  }
+
+  .candidate-form-hero {
+    grid-template-columns: 1fr;
   }
 
   .candidate-form-actions {

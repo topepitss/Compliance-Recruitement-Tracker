@@ -5,9 +5,10 @@ const path = require('path');
 
 const PORT = Number(process.env.PORT || 3000);
 const PUBLIC_DIR = __dirname;
-const DATABASE_PATH = path.join(__dirname, 'data', 'database.json');
-const USERS_PATH = path.join(__dirname, 'data', 'users.json');
-const ACTIVITY_PATH = path.join(__dirname, 'data', 'activity.json');
+const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, 'data'));
+const DATABASE_PATH = path.join(DATA_DIR, 'database.json');
+const USERS_PATH = path.join(DATA_DIR, 'users.json');
+const ACTIVITY_PATH = path.join(DATA_DIR, 'activity.json');
 const DEFAULT_REGISTER_CODE = 'BHEL-PRIVATE-2026';
 const REGISTER_CODES = new Set([
   DEFAULT_REGISTER_CODE,
