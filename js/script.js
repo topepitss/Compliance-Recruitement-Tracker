@@ -771,24 +771,21 @@ function getQcCompletionBlock(candidate) {
   if (!qcDate) return null;
 
   const today = normalizeDateOnly(new Date());
-  const restrictionDate = normalizeDateOnly(qcDate);
-  const dateLabel = restrictionDate.toLocaleDateString('en-AU', {
+  const expiryDate = normalizeDateOnly(qcDate);
+  const dateLabel = expiryDate.toLocaleDateString('en-AU', {
     day: '2-digit',
     month: 'short',
     year: 'numeric'
   });
 
-  if (restrictionDate <= today) {
+  if (expiryDate <= today) {
     return {
       type: 'expired',
       message: `Candidate needs to update expired document, please request the candidate to tracker again. QC date: ${dateLabel}.`
     };
   }
 
-  return {
-    type: 'future',
-    message: `Candidate cannot be marked completed yet. QC allows booking again on ${dateLabel}. Candidate needs to update expired document, please request the candidate to tracker again.`
-  };
+  return null;
 }
 
 function showTrackerToast(message) {
@@ -1005,9 +1002,9 @@ function renderRows() {
         actualToggleBtn.textContent = 'Docs';
         actualToggleBtn.classList.remove('completed');
       } else if (qcBlock) {
-        actualToggleBtn.disabled = false;
+        actualToggleBtn.disabled = true;
         actualToggleBtn.textContent = 'Pending';
-        actualToggleBtn.title = 'QC date blocks completion for this candidate.';
+        actualToggleBtn.title = qcBlock.message;
         actualToggleBtn.classList.remove('completed');
         actualToggleBtn.classList.add('qc-blocked');
       } else {
