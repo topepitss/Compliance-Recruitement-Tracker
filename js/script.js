@@ -755,8 +755,11 @@ function parseNumericDate(value) {
   const slashMatch = text.match(/\b(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})\b/);
   if (!slashMatch) return null;
 
-  const day = Number(slashMatch[1]);
-  const month = Number(slashMatch[2]) - 1;
+  const first = Number(slashMatch[1]);
+  const second = Number(slashMatch[2]);
+  const isMonthFirst = first <= 12 && second > 12;
+  const day = isMonthFirst ? second : first;
+  const month = (isMonthFirst ? first : second) - 1;
   const year = Number(slashMatch[3].length === 2 ? `20${slashMatch[3]}` : slashMatch[3]);
   const date = new Date(year, month, day);
   return date.getFullYear() === year && date.getMonth() === month && date.getDate() === day ? date : null;
@@ -999,7 +1002,8 @@ function renderRows() {
       // Toggle button state depends on missing documents
       if (candidate.missingDocs.length > 0) {
         actualToggleBtn.disabled = true;
-        actualToggleBtn.textContent = 'Docs';
+        actualToggleBtn.textContent = 'Pending';
+        actualToggleBtn.title = 'Missing documents block completion for this candidate.';
         actualToggleBtn.classList.remove('completed');
       } else if (qcBlock) {
         actualToggleBtn.disabled = true;
