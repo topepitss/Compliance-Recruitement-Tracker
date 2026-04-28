@@ -8,10 +8,20 @@ const PUBLIC_DIR = __dirname;
 const DATABASE_PATH = path.join(__dirname, 'data', 'database.json');
 const USERS_PATH = path.join(__dirname, 'data', 'users.json');
 const ACTIVITY_PATH = path.join(__dirname, 'data', 'activity.json');
-const REGISTER_CODE = process.env.REGISTER_CODE || 'BHEL-PRIVATE-2026';
+const DEFAULT_REGISTER_CODE = 'BHEL-PRIVATE-2026';
+const REGISTER_CODE = normalizeRegisterCode(process.env.REGISTER_CODE || DEFAULT_REGISTER_CODE);
 const SESSION_COOKIE = 'sustainhealth_session';
 const activeSessions = new Map();
 const adminRoles = new Set(['superadmin', 'admin']);
+
+function normalizeRegisterCode(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^['"]|['"]$/g, '')
+    .trim()
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .toUpperCase();
+}
 
 const defaultData = {
   candidates: [],
@@ -402,7 +412,7 @@ const server = http.createServer(async (request, response) => {
       const username = sanitizeUsername(body.username);
       const password = String(body.password || '');
       const confirmPassword = String(body.confirmPassword || '');
-      const verificationCode = String(body.verificationCode || '').trim();
+      const verificationCode = normalizeRegisterCode(body.verificationCode);
 
       if (!/^[a-z0-9._-]{3,32}$/.test(username)) {
         sendJson(response, 400, { ok: false, message: 'Username must be 3-32 letters, numbers, dots, dashes, or underscores.' });
