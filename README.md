@@ -53,6 +53,6 @@ npm start
 
 ## Important
 
-Tracker records and activity logs are local runtime data and are ignored by Git. Account files, `data/users.json` and `data/users.backup.json`, are kept separately so registered accounts do not reset just because code changes are deployed. For a live production setup, a real database or a persistent `DATA_DIR` is still the safest option.
+Tracker records, activity logs, and account files are runtime data and are ignored by Git. Do not commit `data/users.json`; deploying an old copy can overwrite live accounts. For live hosting, use a real database or set `DATA_DIR` to persistent storage so accounts survive code deploys and restarts.
 
 This project is good for a portfolio or school project. For real production use, move the JSON data into a database and change the default admin password.

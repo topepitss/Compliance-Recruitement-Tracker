@@ -56,6 +56,7 @@ const candidateModal = document.getElementById('candidateModal');
 const candidateForm = document.getElementById('candidateForm');
 const closeCandidateModal = document.getElementById('closeCandidateModal');
 const cancelCandidateModal = document.getElementById('cancelCandidateModal');
+const trackerToast = document.getElementById('trackerToast');
 
 let selectedCandidateIds = new Set();
 
@@ -710,6 +711,100 @@ function updateArchiveCounts() {
   `;
 }
 
+function normalizeDateOnly(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function parseMonthNameDate(value) {
+  const monthMap = {
+    jan: 0, january: 0,
+    feb: 1, february: 1,
+    mar: 2, march: 2,
+    apr: 3, april: 3,
+    may: 4,
+    jun: 5, june: 5,
+    jul: 6, july: 6,
+    aug: 7, august: 7,
+    sep: 8, sept: 8, september: 8,
+    oct: 9, october: 9,
+    nov: 10, november: 10,
+    dec: 11, december: 11
+  };
+
+  const match = String(value || '').match(/\b(january|february|march|april|may|june|july|august|september|sept|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(\d{4}))?\b/i);
+  if (!match) return null;
+
+  const month = monthMap[match[1].toLowerCase()];
+  const day = Number(match[2]);
+  const year = match[3] ? Number(match[3]) : new Date().getFullYear();
+  const date = new Date(year, month, day);
+  return date.getMonth() === month && date.getDate() === day ? date : null;
+}
+
+function parseNumericDate(value) {
+  const text = String(value || '');
+  const isoMatch = text.match(/\b(\d{4})-(\d{1,2})-(\d{1,2})\b/);
+  if (isoMatch) {
+    const year = Number(isoMatch[1]);
+    const month = Number(isoMatch[2]) - 1;
+    const day = Number(isoMatch[3]);
+    const date = new Date(year, month, day);
+    return date.getFullYear() === year && date.getMonth() === month && date.getDate() === day ? date : null;
+  }
+
+  const slashMatch = text.match(/\b(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})\b/);
+  if (!slashMatch) return null;
+
+  const day = Number(slashMatch[1]);
+  const month = Number(slashMatch[2]) - 1;
+  const year = Number(slashMatch[3].length === 2 ? `20${slashMatch[3]}` : slashMatch[3]);
+  const date = new Date(year, month, day);
+  return date.getFullYear() === year && date.getMonth() === month && date.getDate() === day ? date : null;
+}
+
+function getQcDate(qcNotes) {
+  return parseNumericDate(qcNotes) || parseMonthNameDate(qcNotes);
+}
+
+function getQcCompletionBlock(candidate) {
+  const qcDate = getQcDate(candidate.qcNotes);
+  if (!qcDate) return null;
+
+  const today = normalizeDateOnly(new Date());
+  const restrictionDate = normalizeDateOnly(qcDate);
+  const dateLabel = restrictionDate.toLocaleDateString('en-AU', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+
+  if (restrictionDate <= today) {
+    return {
+      type: 'expired',
+      message: `Candidate needs to update expired document, please request the candidate to tracker again. QC date: ${dateLabel}.`
+    };
+  }
+
+  return {
+    type: 'future',
+    message: `Candidate cannot be marked completed yet. QC allows booking again on ${dateLabel}. Candidate needs to update expired document, please request the candidate to tracker again.`
+  };
+}
+
+function showTrackerToast(message) {
+  if (!trackerToast) return;
+  trackerToast.textContent = message;
+  trackerToast.hidden = false;
+  trackerToast.classList.add('is-visible');
+  window.clearTimeout(showTrackerToast.timer);
+  showTrackerToast.timer = window.setTimeout(() => {
+    trackerToast.classList.remove('is-visible');
+    window.setTimeout(() => {
+      trackerToast.hidden = true;
+    }, 220);
+  }, 4200);
+}
+
 function getFilteredItems(sourceItems) {
   const filterText = searchInput.value.trim().toLowerCase();
   const statusValue = statusFilter.value;
@@ -831,8 +926,9 @@ function renderRows() {
     roleCell.textContent = candidate.role;
     stateCell.textContent = candidate.states.join(', ');
 
-    let isCompleted = candidate.completed && candidate.missingDocs.length === 0;
-    if (candidate.missingDocs.length > 0 && candidate.completed) {
+    const qcBlock = getQcCompletionBlock(candidate);
+    let isCompleted = candidate.completed && candidate.missingDocs.length === 0 && !qcBlock;
+    if ((candidate.missingDocs.length > 0 || qcBlock) && candidate.completed) {
       candidate.completed = false;
       delete candidate.completedDate;
       delete candidate.completedAt;
@@ -908,14 +1004,25 @@ function renderRows() {
         actualToggleBtn.disabled = true;
         actualToggleBtn.textContent = 'Docs';
         actualToggleBtn.classList.remove('completed');
+      } else if (qcBlock) {
+        actualToggleBtn.disabled = false;
+        actualToggleBtn.textContent = 'QC';
+        actualToggleBtn.classList.remove('completed');
+        actualToggleBtn.classList.add('qc-blocked');
       } else {
         actualToggleBtn.disabled = false;
         actualToggleBtn.textContent = isCompleted ? 'Pending' : 'Done';
         actualToggleBtn.classList.toggle('completed', isCompleted);
+        actualToggleBtn.classList.remove('qc-blocked');
       }
 
       actualToggleBtn.addEventListener('click', () => {
         if (candidate.missingDocs.length > 0) return;
+        const nextQcBlock = getQcCompletionBlock(candidate);
+        if (!candidate.completed && nextQcBlock) {
+          showTrackerToast(nextQcBlock.message);
+          return;
+        }
 
         candidate.completed = !candidate.completed;
 
@@ -992,6 +1099,11 @@ function markSelectedCandidatesCompleted() {
     const candidate = candidates.find(c => c.id === id);
     if (!candidate) return;
     if (candidate.missingDocs && candidate.missingDocs.length > 0) return;
+    const qcBlock = getQcCompletionBlock(candidate);
+    if (qcBlock) {
+      showTrackerToast(qcBlock.message);
+      return;
+    }
     candidate.completed = true;
     candidate.completedDate = getTodayString();
     candidate.completedAt = new Date().toISOString();

@@ -2,10 +2,8 @@ node_modules/
 logs/
 .env
 
-# Runtime tracker data. Accounts are tracked separately so they do not reset on deploy.
+# Runtime data. Do not commit these files or deploys can overwrite live accounts.
 data/*.json
-!data/users.json
-!data/users.backup.json
 
 # OS/editor noise
 .DS_Store
