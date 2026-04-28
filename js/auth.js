@@ -37,6 +37,22 @@ function redirectProtectedPageToLogin() {
   }
 }
 
+function setupPasswordToggles() {
+  document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    const field = button.closest('.password-field');
+    const input = field ? field.querySelector('input') : null;
+
+    if (!input) return;
+
+    button.addEventListener('click', () => {
+      const shouldShow = input.type === 'password';
+      input.type = shouldShow ? 'text' : 'password';
+      button.textContent = shouldShow ? 'Hide' : 'Show';
+      button.setAttribute('aria-label', `${shouldShow ? 'Hide' : 'Show'} ${input.name || 'password'}`);
+    });
+  });
+}
+
 async function postJson(url, data) {
   const response = await fetch(url, {
     method: 'POST',
@@ -128,6 +144,7 @@ async function requireLogin() {
 
 document.addEventListener('DOMContentLoaded', () => {
   applyRoleUI(localStorage.getItem(AUTH_CONFIG.roleKey) || 'user');
+  setupPasswordToggles();
 
   const protectedPage = document.body.dataset.protected === 'true';
   const loginForm = document.getElementById('loginForm');

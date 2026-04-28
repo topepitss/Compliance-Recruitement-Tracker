@@ -40,17 +40,26 @@
 
         <label>
           Password
-          <input name="password" type="password" autocomplete="new-password" minlength="8" required />
+          <span class="password-field">
+            <input name="password" type="password" autocomplete="new-password" minlength="8" required />
+            <button type="button" class="password-toggle" data-password-toggle aria-label="Show password">Show</button>
+          </span>
         </label>
 
         <label>
           Confirm password
-          <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required />
+          <span class="password-field">
+            <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required />
+            <button type="button" class="password-toggle" data-password-toggle aria-label="Show confirm password">Show</button>
+          </span>
         </label>
 
         <label>
           Private verification code
-          <input name="verificationCode" type="password" autocomplete="off" required />
+          <span class="password-field">
+            <input name="verificationCode" type="password" autocomplete="off" required />
+            <button type="button" class="password-toggle" data-password-toggle aria-label="Show private verification code">Show</button>
+          </span>
         </label>
 
         <p id="registerMessage" class="login-error" hidden></p>

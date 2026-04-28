@@ -153,6 +153,36 @@ a {
   outline: none;
 }
 
+.password-field {
+  position: relative;
+  display: block;
+}
+
+.password-field input {
+  padding-right: 4.7rem;
+}
+
+.login-form .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  min-height: 34px;
+  width: 64px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary-dark);
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.login-form .password-toggle:hover,
+.login-form .password-toggle:focus-visible {
+  background: rgba(23, 107, 135, 0.1);
+  color: var(--primary);
+}
+
 .login-form input:focus {
   border-color: rgba(23, 107, 135, 0.55);
   box-shadow: 0 0 0 3px rgba(23, 107, 135, 0.16);
