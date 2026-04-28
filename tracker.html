@@ -211,6 +211,83 @@
     </main>
   </div>
 
+  <div id="candidateModal" class="modal-backdrop" hidden>
+    <section class="candidate-modal" role="dialog" aria-modal="true" aria-labelledby="candidateModalTitle">
+      <div class="modal-header">
+        <div>
+          <p class="modal-eyebrow">New record</p>
+          <h2 id="candidateModalTitle">Add candidate details</h2>
+        </div>
+        <button id="closeCandidateModal" class="modal-close-btn" type="button" aria-label="Close add candidate form">x</button>
+      </div>
+
+      <form id="candidateForm" class="candidate-form">
+        <label>
+          QC Notes
+          <textarea name="qcNotes" rows="3" placeholder="Can book from May 1st"></textarea>
+        </label>
+
+        <label>
+          Name
+          <input name="name" type="text" placeholder="Aisha Patel" required />
+        </label>
+
+        <label>
+          Role
+          <input name="role" type="text" placeholder="Compliance Candidate" required />
+        </label>
+
+        <label>
+          State
+          <select name="state" required></select>
+        </label>
+
+        <label>
+          Status
+          <select name="status">
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+
+        <label>
+          Risk Assessment
+          <select name="riskAssessment" required></select>
+        </label>
+
+        <label class="candidate-form-wide">
+          Missing Documents
+          <textarea name="missingDocs" rows="3" placeholder="Proof of ID, Training certificate"></textarea>
+        </label>
+
+        <label class="candidate-form-wide">
+          Required Docs
+          <textarea name="requiredDocs" rows="3" readonly></textarea>
+        </label>
+
+        <label class="candidate-form-wide">
+          Compliance Notes
+          <textarea name="complianceNotes" rows="3" placeholder="Awaiting background check"></textarea>
+        </label>
+
+        <label class="candidate-form-wide">
+          Afterhours Staff Notes
+          <textarea name="afterhoursNotes" rows="3" placeholder="Available weekends"></textarea>
+        </label>
+
+        <label>
+          Date Added
+          <input name="dateAdded" type="date" required />
+        </label>
+
+        <div class="candidate-form-actions">
+          <button id="cancelCandidateModal" class="secondary-btn" type="button">Cancel</button>
+          <button class="primary-btn" type="submit">Save Candidate</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
   <template id="candidateRowTemplate">
     <tr>
       <td class="select-cell"><input type="checkbox" class="row-select" /></td>

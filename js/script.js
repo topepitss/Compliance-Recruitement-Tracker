@@ -43,6 +43,10 @@ const pendingStat = document.getElementById('pendingStat');
 const completedStat = document.getElementById('completedStat');
 const missingDocsStat = document.getElementById('missingDocsStat');
 const stateDocsList = document.getElementById('stateDocsList');
+const candidateModal = document.getElementById('candidateModal');
+const candidateForm = document.getElementById('candidateForm');
+const closeCandidateModal = document.getElementById('closeCandidateModal');
+const cancelCandidateModal = document.getElementById('cancelCandidateModal');
 
 let selectedCandidateIds = new Set();
 
@@ -851,36 +855,83 @@ function promptRiskAssessment(defaultRisk = 'In-Progress') {
   return riskAssessmentOptions.includes(normalized) ? normalized : null;
 }
 
+function parseCommaList(value) {
+  return value ? value.split(',').map(item => item.trim()).filter(Boolean) : [];
+}
+
+function setCandidateFormOptions() {
+  if (!candidateForm) return;
+  const stateSelect = candidateForm.elements.state;
+  const riskSelect = candidateForm.elements.riskAssessment;
+  stateSelect.innerHTML = allStates
+    .map(state => `<option value="${escapeAttribute(state)}">${escapeHTML(state)}</option>`)
+    .join('');
+  riskSelect.innerHTML = riskAssessmentOptions
+    .map(option => `<option value="${escapeAttribute(option)}">${escapeHTML(option)}</option>`)
+    .join('');
+}
+
+function updateCandidateRequiredDocsPreview() {
+  if (!candidateForm) return;
+  const state = candidateForm.elements.state.value || 'ACT';
+  candidateForm.elements.requiredDocs.value = getStateRequirementText(state);
+}
+
+function openCandidateModal() {
+  if (!candidateModal || !candidateForm) return;
+  candidateForm.reset();
+  candidateForm.elements.dateAdded.value = getTodayString();
+  candidateForm.elements.state.value = 'ACT';
+  candidateForm.elements.riskAssessment.value = 'In-Progress';
+  candidateForm.elements.status.value = 'pending';
+  updateCandidateRequiredDocsPreview();
+  candidateModal.hidden = false;
+  document.body.classList.add('modal-open');
+  window.setTimeout(() => candidateForm.elements.name.focus(), 0);
+}
+
+function closeCandidateFormModal() {
+  if (!candidateModal) return;
+  candidateModal.hidden = true;
+  document.body.classList.remove('modal-open');
+}
+
 function addCandidate() {
-  const name = prompt('Enter the person or candidate name:');
-  if (!name) return;
-  const role = prompt('Enter the role or compliance area:');
-  if (!role) return;
-  const state = promptState();
-  if (!state) return;
-  const riskAssessment = promptRiskAssessment();
-  if (!riskAssessment) return;
-  const docsInput = prompt('Enter missing documents (comma separated), or leave blank if none:');
-  const missingDocs = docsInput ? docsInput.split(',').map(doc => doc.trim()).filter(Boolean) : [];
-  const complianceNotes = prompt('Enter compliance notes (optional):') || '';
-  const afterhoursNotes = prompt('Enter afterhours notes (optional):') || '';
-  const qcNotes = prompt('Enter QC notes (optional):') || '';
-  const dateAdded = new Date().toISOString();
+  openCandidateModal();
+}
+
+function saveCandidateFromForm(event) {
+  event.preventDefault();
+  const formData = new FormData(candidateForm);
+  const name = String(formData.get('name') || '').trim();
+  const role = String(formData.get('role') || '').trim();
+  const state = String(formData.get('state') || 'ACT');
+  const riskAssessment = String(formData.get('riskAssessment') || 'In-Progress');
+  const status = String(formData.get('status') || 'pending');
+  const missingDocs = parseCommaList(String(formData.get('missingDocs') || ''));
+  const dateValue = String(formData.get('dateAdded') || getTodayString());
+
+  if (!name || !role) return;
+
+  const completed = status === 'completed' && missingDocs.length === 0;
+  const dateAdded = new Date(`${dateValue}T00:00:00`).toISOString();
   candidates.unshift({
     id: generateId(),
-    name: name.trim(),
-    role: role.trim(),
+    name,
+    role,
     states: [state],
-    completed: false,
+    completed,
     missingDocs,
     riskAssessment,
-    complianceNotes,
-    afterhoursNotes,
-    qcNotes,
-    dateAdded
+    complianceNotes: String(formData.get('complianceNotes') || '').trim(),
+    afterhoursNotes: String(formData.get('afterhoursNotes') || '').trim(),
+    qcNotes: String(formData.get('qcNotes') || '').trim(),
+    dateAdded,
+    ...(completed ? { completedDate: getTodayString(), completedAt: new Date().toISOString() } : {})
   });
-  addToHistory(`Added candidate ${name.trim()}`);
+  addToHistory(`Added candidate ${name}`);
   saveToLocalStorage();
+  closeCandidateFormModal();
   renderRows();
 }
 
@@ -1035,6 +1086,21 @@ viewSelect.addEventListener('change', renderRows);
 stateFilter.addEventListener('change', renderRows);
 sortSelect.addEventListener('change', renderRows);
 addRowBtn.addEventListener('click', addCandidate);
+if (candidateForm) {
+  setCandidateFormOptions();
+  candidateForm.elements.state.addEventListener('change', updateCandidateRequiredDocsPreview);
+  candidateForm.addEventListener('submit', saveCandidateFromForm);
+}
+if (closeCandidateModal) closeCandidateModal.addEventListener('click', closeCandidateFormModal);
+if (cancelCandidateModal) cancelCandidateModal.addEventListener('click', closeCandidateFormModal);
+if (candidateModal) {
+  candidateModal.addEventListener('click', (event) => {
+    if (event.target === candidateModal) closeCandidateFormModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !candidateModal.hidden) closeCandidateFormModal();
+  });
+}
 copyReportBtn.addEventListener('click', () => {
   const report = dailyReportText.value;
   const markCopied = () => {
