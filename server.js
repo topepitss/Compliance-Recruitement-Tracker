@@ -9,7 +9,10 @@ const DATABASE_PATH = path.join(__dirname, 'data', 'database.json');
 const USERS_PATH = path.join(__dirname, 'data', 'users.json');
 const ACTIVITY_PATH = path.join(__dirname, 'data', 'activity.json');
 const DEFAULT_REGISTER_CODE = 'BHEL-PRIVATE-2026';
-const REGISTER_CODE = normalizeRegisterCode(process.env.REGISTER_CODE || DEFAULT_REGISTER_CODE);
+const REGISTER_CODES = new Set([
+  DEFAULT_REGISTER_CODE,
+  process.env.REGISTER_CODE
+].map(normalizeRegisterCode).filter(Boolean));
 const SESSION_COOKIE = 'sustainhealth_session';
 const activeSessions = new Map();
 const adminRoles = new Set(['superadmin', 'admin']);
@@ -429,7 +432,7 @@ const server = http.createServer(async (request, response) => {
         return;
       }
 
-      if (verificationCode !== REGISTER_CODE) {
+      if (!REGISTER_CODES.has(verificationCode)) {
         await recordActivity(request, {
           username,
           action: 'register_blocked',
