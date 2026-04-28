@@ -37,6 +37,7 @@ const sortSelect = document.getElementById('sortSelect');
 const addRowBtn = document.getElementById('addRowBtn');
 const copyReportBtn = document.getElementById('copyReportBtn');
 const dailyReportText = document.getElementById('dailyReportText');
+const dailyReportPreview = document.getElementById('dailyReportPreview');
 const completedByState = document.getElementById('completedByState');
 const deletedByState = document.getElementById('deletedByState');
 const sortLabel = document.getElementById('sortLabel');
@@ -476,51 +477,199 @@ function saveStateEdit(p, state, originalText) {
   renderStateRequirements();
 }
 
-function generateDailyReport() {
+function buildDailyReportData() {
   const todayISO = getTodayString();
-  const todayLabel = new Date().toLocaleDateString('en-AU');
-  const pendingCandidates = candidates.filter(c => !c.completed);
-  const completedToday = candidates.filter(c => c.completed && c.completedDate === todayISO);
-  const missingDocsCount = candidates.filter(c => c.missingDocs && c.missingDocs.length > 0).length;
+  const todayLabel = getDisplayDate(todayISO);
+  const completedCandidates = candidates.filter(candidate => candidate.completed);
+  const pendingCandidates = candidates.filter(candidate => !candidate.completed);
+  const completedToday = completedCandidates
+    .filter(candidate => candidate.completedDate === todayISO)
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const candidatesMissingDocs = candidates
+    .filter(candidate => candidate.missingDocs && candidate.missingDocs.length > 0)
+    .sort((a, b) => {
+      const stateCompare = (a.states[0] || '').localeCompare(b.states[0] || '');
+      return stateCompare || a.name.localeCompare(b.name);
+    });
+  const stateSummary = allStates.map(state => {
+    const stateCandidates = candidates.filter(candidate => candidate.states.includes(state));
+    return {
+      state,
+      active: stateCandidates.length,
+      pending: stateCandidates.filter(candidate => !candidate.completed).length,
+      completed: stateCandidates.filter(candidate => candidate.completed).length,
+      completedToday: stateCandidates.filter(candidate => candidate.completed && candidate.completedDate === todayISO).length,
+      missingDocs: stateCandidates.filter(candidate => candidate.missingDocs && candidate.missingDocs.length > 0).length
+    };
+  });
 
-  let report = `COMPLIANCE CANDIDATE TRACKER - DAILY REPORT\n`;
-  report += `Date: ${todayLabel}\n`;
-  report += `${'='.repeat(60)}\n\n`;
+  return {
+    todayLabel,
+    generatedAt: new Date().toLocaleString('en-AU', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }),
+    activeCount: candidates.length,
+    pendingCount: pendingCandidates.length,
+    totalCompletedCount: completedCandidates.length,
+    completedTodayCount: completedToday.length,
+    missingDocsCount: candidatesMissingDocs.length,
+    completedToday,
+    candidatesMissingDocs,
+    stateSummary
+  };
+}
+
+function renderReportTable(headers, rows, emptyMessage) {
+  const headerHtml = headers.map(header => `
+    <th style="padding: 11px 12px; border: 1px solid #d6e1ea; background: #eaf4fb; color: #0f4f65; font-size: 12px; font-weight: 700; text-align: left;">
+      ${escapeHTML(header)}
+    </th>
+  `).join('');
+
+  const bodyHtml = rows.length
+    ? rows.map(columns => `
+      <tr>
+        ${columns.map(column => `
+          <td style="padding: 11px 12px; border: 1px solid #d6e1ea; color: #24364a; font-size: 12.5px; vertical-align: top; line-height: 1.5;">
+            ${column}
+          </td>
+        `).join('')}
+      </tr>
+    `).join('')
+    : `
+      <tr>
+        <td colspan="${headers.length}" style="padding: 13px 14px; border: 1px solid #d6e1ea; color: #5b6d80; font-size: 12.5px;">
+          ${escapeHTML(emptyMessage)}
+        </td>
+      </tr>
+    `;
+
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; background: #ffffff; border: 1px solid #d6e1ea;">
+      <thead>
+        <tr>${headerHtml}</tr>
+      </thead>
+      <tbody>${bodyHtml}</tbody>
+    </table>
+  `;
+}
+
+function generateDailyReportHTML(reportData = buildDailyReportData()) {
+  const summaryRows = [
+    ['Active candidates', String(reportData.activeCount)],
+    ['Pending candidates', String(reportData.pendingCount)],
+    ['Total completed', String(reportData.totalCompletedCount)],
+    ['Completed today', String(reportData.completedTodayCount)],
+    ['Candidates with missing files', String(reportData.missingDocsCount)]
+  ].map(([label, value]) => [escapeHTML(label), `<strong style="color: #0f2e42;">${escapeHTML(value)}</strong>`]);
+
+  const completedRows = reportData.completedToday.map(candidate => [
+    escapeHTML(candidate.name),
+    escapeHTML((candidate.states || []).join(', ') || '-'),
+    escapeHTML(candidate.role || '-'),
+    escapeHTML(formatDate(candidate.completedDate || candidate.completedAt) || reportData.todayLabel)
+  ]);
+
+  const missingRows = reportData.candidatesMissingDocs.map(candidate => [
+    escapeHTML(candidate.name),
+    escapeHTML((candidate.states || []).join(', ') || '-'),
+    escapeHTML(candidate.role || '-'),
+    candidate.missingDocs.map(doc => escapeHTML(doc)).join('<br />'),
+    escapeHTML(candidate.complianceNotes || candidate.qcNotes || '-')
+  ]);
+
+  const stateRows = reportData.stateSummary.map(item => [
+    `<strong style="color: #0f2e42;">${escapeHTML(item.state)}</strong>`,
+    escapeHTML(String(item.active)),
+    escapeHTML(String(item.pending)),
+    escapeHTML(String(item.completed)),
+    escapeHTML(String(item.completedToday)),
+    escapeHTML(String(item.missingDocs))
+  ]);
+
+  return `
+    <div style="min-width: 720px; font-family: Aptos, 'Segoe UI', Arial, sans-serif; color: #10243e; background: #ffffff; border: 1px solid #d8e4ed; border-radius: 16px; padding: 24px; box-sizing: border-box;">
+      <div style="padding-bottom: 18px; border-bottom: 2px solid #176b87;">
+        <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #176b87;">SustainHealth Casual Compliance</p>
+        <h3 style="margin: 0; font-size: 24px; line-height: 1.25; color: #0f2e42;">Daily Outlook Report</h3>
+        <p style="margin: 8px 0 0; font-size: 13px; color: #56687a;">${escapeHTML(reportData.todayLabel)} | Generated ${escapeHTML(reportData.generatedAt)}</p>
+      </div>
+
+      <p style="margin: 18px 0 0; font-size: 13px; color: #10243e;"><strong>Subject:</strong> Casual Compliance Daily Report - ${escapeHTML(reportData.todayLabel)}</p>
+      <p style="margin: 18px 0 0; font-size: 13px;">Hi Team,</p>
+      <p style="margin: 10px 0 0; font-size: 13px; line-height: 1.6; color: #24364a;">Please see today's casual compliance update from the tracker.</p>
+
+      <div style="margin-top: 22px;">
+        <h4 style="margin: 0 0 10px; font-size: 14px; color: #0f4f65;">Summary</h4>
+        ${renderReportTable(['Metric', 'Count'], summaryRows, 'No summary available.')}
+      </div>
+
+      <div style="margin-top: 22px;">
+        <h4 style="margin: 0 0 10px; font-size: 14px; color: #0f4f65;">Completed Today</h4>
+        ${renderReportTable(['Candidate', 'State', 'Role', 'Completed'], completedRows, 'No candidates were marked completed today.')}
+      </div>
+
+      <div style="margin-top: 22px;">
+        <h4 style="margin: 0 0 10px; font-size: 14px; color: #0f4f65;">Candidates Missing Files</h4>
+        ${renderReportTable(['Candidate', 'State', 'Role', 'Missing files', 'Notes'], missingRows, 'No candidates are currently missing files.')}
+      </div>
+
+      <div style="margin-top: 22px;">
+        <h4 style="margin: 0 0 10px; font-size: 14px; color: #0f4f65;">State Summary</h4>
+        ${renderReportTable(['State', 'Active', 'Pending', 'Completed', 'Completed today', 'Missing files'], stateRows, 'No state activity recorded.')}
+      </div>
+
+      <p style="margin: 22px 0 0; font-size: 13px; line-height: 1.6;">Thanks,<br />SustainHealth Compliance Tracker</p>
+    </div>
+  `;
+}
+
+function generateDailyReport(reportData = buildDailyReportData()) {
+  let report = `Subject: Casual Compliance Daily Report - ${reportData.todayLabel}\n\n`;
+  report += `Hi Team,\n\n`;
+  report += `Please see today's casual compliance update from the tracker.\n\n`;
 
   report += `SUMMARY\n`;
-  report += `Total Active Candidates: ${candidates.length}\n`;
-  report += `Pending: ${pendingCandidates.length}\n`;
-  report += `Completed Today: ${completedToday.length}\n`;
-  report += `Candidates Missing Documents: ${missingDocsCount}\n\n`;
+  report += `- Active candidates: ${reportData.activeCount}\n`;
+  report += `- Pending candidates: ${reportData.pendingCount}\n`;
+  report += `- Total completed: ${reportData.totalCompletedCount}\n`;
+  report += `- Completed today: ${reportData.completedTodayCount}\n`;
+  report += `- Candidates with missing files: ${reportData.missingDocsCount}\n\n`;
 
-  report += `STATE BREAKDOWN\n`;
-  for (const state of allStates) {
-    const active = candidates.filter(c => c.states.includes(state)).length;
-    report += `${state}: ${active} candidates\n`;
+  report += `COMPLETED TODAY\n`;
+  if (reportData.completedToday.length) {
+    reportData.completedToday.forEach((candidate, index) => {
+      report += `${index + 1}. ${candidate.name} | ${(candidate.states || []).join(', ') || '-'} | ${candidate.role || '-'}\n`;
+      report += `   Completed: ${formatDate(candidate.completedDate || candidate.completedAt) || reportData.todayLabel}\n`;
+    });
+  } else {
+    report += `- No candidates were marked completed today.\n`;
   }
   report += `\n`;
 
-  report += `PENDING CANDIDATES\n`;
-  report += `${'-'.repeat(60)}\n`;
-  pendingCandidates.forEach((c, idx) => {
-    report += `${idx + 1}. ${c.name} (${c.states.join(', ')}) - ${c.role}\n`;
-    report += `   Risk: ${c.riskAssessment} | Missing: ${c.missingDocs.length ? c.missingDocs.join(', ') : 'None'}\n`;
-    report += `   Notes: ${c.complianceNotes || 'None'}\n`;
-    if (c.afterhoursNotes) report += `   Afterhours: ${c.afterhoursNotes}\n`;
-    if (c.qcNotes) report += `   QC: ${c.qcNotes}\n`;
-    report += `\n`;
-  });
+  report += `CANDIDATES MISSING FILES\n`;
+  if (reportData.candidatesMissingDocs.length) {
+    reportData.candidatesMissingDocs.forEach((candidate, index) => {
+      report += `${index + 1}. ${candidate.name} | ${(candidate.states || []).join(', ') || '-'} | ${candidate.role || '-'}\n`;
+      report += `   Missing files: ${candidate.missingDocs.join(', ')}\n`;
+      if (candidate.complianceNotes) report += `   Notes: ${candidate.complianceNotes}\n`;
+    });
+  } else {
+    report += `- No candidates are currently missing files.\n`;
+  }
+  report += `\n`;
 
-  report += `COMPLETED TODAY\n`;
-  report += `${'-'.repeat(60)}\n`;
-  completedToday.forEach((c, idx) => {
-    report += `${idx + 1}. ${c.name} (${c.states.join(', ')}) - ${c.role}\n`;
-    report += `   Risk: ${c.riskAssessment}\n`;
-    report += `   Completed: ${formatDate(c.completedDate)}\n`;
-    report += `\n`;
+  report += `STATE SUMMARY\n`;
+  reportData.stateSummary.forEach(item => {
+    report += `- ${item.state}: Active ${item.active} | Pending ${item.pending} | Completed ${item.completed} | Completed today ${item.completedToday} | Missing files ${item.missingDocs}\n`;
   });
+  report += `\nThanks,\nSustainHealth Compliance Tracker`;
 
-  return report;
+  return report.trim();
 }
 
 function getTodayString() {
@@ -528,7 +677,11 @@ function getTodayString() {
 }
 
 function updateDailyReport() {
-  dailyReportText.value = generateDailyReport();
+  const reportData = buildDailyReportData();
+  dailyReportText.value = generateDailyReport(reportData);
+  if (dailyReportPreview) {
+    dailyReportPreview.innerHTML = generateDailyReportHTML(reportData);
+  }
 }
 
 function updateArchiveCounts() {
@@ -1157,26 +1310,52 @@ if (candidateModal) {
     if (event.key === 'Escape' && !candidateModal.hidden) closeCandidateFormModal();
   });
 }
-copyReportBtn.addEventListener('click', () => {
+
+function copyPlainTextFallback(text) {
+  const helper = document.createElement('textarea');
+  helper.value = text;
+  helper.setAttribute('readonly', 'readonly');
+  helper.style.position = 'fixed';
+  helper.style.left = '-9999px';
+  helper.style.top = '0';
+  document.body.appendChild(helper);
+  helper.select();
+  document.execCommand('copy');
+  document.body.removeChild(helper);
+}
+
+copyReportBtn.addEventListener('click', async () => {
   const report = dailyReportText.value;
+  const reportHtml = dailyReportPreview ? dailyReportPreview.innerHTML : '';
   const markCopied = () => {
-    copyReportBtn.textContent = 'Copied!';
+    copyReportBtn.textContent = 'Copied for Outlook!';
     setTimeout(() => {
-      copyReportBtn.textContent = 'Copy to Clipboard';
+      copyReportBtn.textContent = 'Copy for Outlook';
     }, 2000);
   };
 
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(report).then(markCopied).catch(() => {
-      dailyReportText.select();
-      document.execCommand('copy');
+  try {
+    if (navigator.clipboard && window.isSecureContext && window.ClipboardItem && reportHtml) {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/plain': new Blob([report], { type: 'text/plain' }),
+          'text/html': new Blob([reportHtml], { type: 'text/html' })
+        })
+      ]);
       markCopied();
-    });
-    return;
+      return;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(report);
+      markCopied();
+      return;
+    }
+  } catch (error) {
+    // Fall through to the plain-text fallback.
   }
 
-  dailyReportText.select();
-  document.execCommand('copy');
+  copyPlainTextFallback(report);
   markCopied();
 });
 completedHistoryBtn.addEventListener('click', showCompletedHistory);

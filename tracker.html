@@ -203,10 +203,16 @@
 
     <section id="dailyReport" class="daily-report">
       <div class="report-header">
-        <h2>Daily Outlook Report</h2>
-        <button id="copyReportBtn" class="secondary-btn">Copy to Clipboard</button>
+        <div class="report-header-copy">
+          <h2>Daily Outlook Report</h2>
+          <p>Live Outlook-ready update with completed counts, candidate states, and missing files.</p>
+        </div>
+        <div class="report-actions">
+          <button id="copyReportBtn" class="secondary-btn">Copy for Outlook</button>
+        </div>
       </div>
-      <textarea id="dailyReportText" class="report-textarea" readonly></textarea>
+      <div id="dailyReportPreview" class="report-preview" aria-live="polite"></div>
+      <textarea id="dailyReportText" class="report-textarea report-textarea-hidden" readonly aria-hidden="true"></textarea>
     </section>
     </main>
   </div>

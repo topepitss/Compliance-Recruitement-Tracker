@@ -1382,6 +1382,19 @@ tbody tr:hover {
   gap: 1rem;
 }
 
+.report-header-copy p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
 .archive-card h3,
 .state-summary h2,
 .daily-report h2 {
@@ -1470,7 +1483,18 @@ tbody tr:hover {
 }
 
 .daily-report {
+  display: grid;
   gap: 1rem;
+}
+
+.report-preview {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid rgba(219, 227, 236, 0.92);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(243, 248, 252, 0.95), rgba(255, 255, 255, 0.98)),
+    #ffffff;
 }
 
 .report-textarea {
@@ -1487,6 +1511,18 @@ tbody tr:hover {
   resize: vertical;
   line-height: 1.6;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.report-textarea-hidden {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  min-width: 1px;
+  min-height: 1px;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 tr.editing td[contenteditable="true"] {
@@ -1609,6 +1645,10 @@ tr.editing td[contenteditable="true"] {
   .report-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .report-actions {
+    width: 100%;
   }
 
   .table-wrap {
