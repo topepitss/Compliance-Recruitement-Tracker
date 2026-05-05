@@ -28,7 +28,7 @@ function AuthVisual() {
       </div>
       <div className="auth-visual-copy">
         <div className="auth-preview-top">
-          <span className="auth-preview-mark">SH</span>
+          <span className="auth-preview-mark">CR</span>
           <span>Live tracker</span>
         </div>
         <h2>{content.title}</h2>

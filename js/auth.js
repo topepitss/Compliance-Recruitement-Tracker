@@ -1,8 +1,8 @@
 const AUTH_CONFIG = {
-  sessionKey: 'sustainhealthAuthSession',
-  userKey: 'sustainhealthAuthUser',
-  roleKey: 'sustainhealthAuthRole',
-  logoutKey: 'sustainhealthLogoutSignal'
+  sessionKey: 'compilianceRecruitmentTrackerAuthSession',
+  userKey: 'compilianceRecruitmentTrackerAuthUser',
+  roleKey: 'compilianceRecruitmentTrackerAuthRole',
+  logoutKey: 'compilianceRecruitmentTrackerLogoutSignal'
 };
 
 function isLoggedIn() {

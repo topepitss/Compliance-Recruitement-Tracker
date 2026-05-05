@@ -15,7 +15,7 @@ const REGISTER_CODES = new Set([
   DEFAULT_REGISTER_CODE,
   process.env.REGISTER_CODE
 ].map(normalizeRegisterCode).filter(Boolean));
-const SESSION_COOKIE = 'sustainhealth_session';
+const SESSION_COOKIE = 'compiliance_recruitment_tracker_session';
 const activeSessions = new Map();
 const adminRoles = new Set(['superadmin', 'admin']);
 
@@ -691,5 +691,5 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`SustainHealth tracker running at http://localhost:${PORT}`);
+  console.log(`Compiliance recruitment tracker running at http://localhost:${PORT}`);
 });

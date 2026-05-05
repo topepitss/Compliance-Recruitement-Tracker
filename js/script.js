@@ -595,7 +595,7 @@ function generateDailyReportHTML(reportData = buildDailyReportData()) {
   return `
     <div style="min-width: 720px; font-family: Aptos, 'Segoe UI', Arial, sans-serif; color: #10243e; background: #ffffff; border: 1px solid #d8e4ed; border-radius: 16px; padding: 24px; box-sizing: border-box;">
       <div style="padding-bottom: 18px; border-bottom: 2px solid #176b87;">
-        <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #176b87;">SustainHealth Casual Compliance</p>
+        <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #176b87;">Compiliance recruitment tracker</p>
         <h3 style="margin: 0; font-size: 24px; line-height: 1.25; color: #0f2e42;">Daily Outlook Report</h3>
         <p style="margin: 8px 0 0; font-size: 13px; color: #56687a;">${escapeHTML(reportData.todayLabel)} | Generated ${escapeHTML(reportData.generatedAt)}</p>
       </div>
@@ -624,7 +624,7 @@ function generateDailyReportHTML(reportData = buildDailyReportData()) {
         ${renderReportTable(['State', 'Active', 'Pending', 'Completed', 'Completed today', 'Missing files'], stateRows, 'No state activity recorded.')}
       </div>
 
-      <p style="margin: 22px 0 0; font-size: 13px; line-height: 1.6;">Thanks,<br />SustainHealth Compliance Tracker</p>
+      <p style="margin: 22px 0 0; font-size: 13px; line-height: 1.6;">Thanks,<br />Compiliance recruitment tracker</p>
     </div>
   `;
 }
@@ -668,7 +668,7 @@ function generateDailyReport(reportData = buildDailyReportData()) {
   reportData.stateSummary.forEach(item => {
     report += `- ${item.state}: Active ${item.active} | Pending ${item.pending} | Completed ${item.completed} | Completed today ${item.completedToday} | Missing files ${item.missingDocs}\n`;
   });
-  report += `\nThanks,\nSustainHealth Compliance Tracker`;
+  report += `\nThanks,\nCompiliance recruitment tracker`;
 
   return report.trim();
 }
