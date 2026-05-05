@@ -78,10 +78,10 @@ function Header() {
   return (
     <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
       <nav className="navbar" aria-label="Main navigation">
-        <a className="brand" href="index.html" aria-label="Compiliance recruitment tracker home">
+        <a className="brand" href="index.html" aria-label="Compliance Recruitment Tracker home">
           <span className="brand-mark">CR</span>
           <span className="brand-text">
-            <strong>Compiliance recruitment tracker</strong>
+            <strong>Compliance Recruitment Tracker</strong>
             <small>Compliance Tracker</small>
           </span>
         </a>
@@ -122,7 +122,7 @@ function Hero() {
         <p className="eyebrow">Healthcare compliance workspace</p>
         <h1 id="hero-title">A calmer way to manage compliance records.</h1>
         <p className="hero-copy">
-          Compiliance recruitment tracker keeps candidate documents, state requirements, risk notes,
+          Compliance Recruitment Tracker keeps candidate documents, state requirements, risk notes,
           and daily movement organized in a pleasant workspace built for real follow-up.
         </p>
 
@@ -292,10 +292,10 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand">
-          <a className="brand" href="index.html" aria-label="Compiliance recruitment tracker home">
+          <a className="brand" href="index.html" aria-label="Compliance Recruitment Tracker home">
             <span className="brand-mark">CR</span>
             <span className="brand-text">
-              <strong>Compiliance recruitment tracker</strong>
+              <strong>Compliance Recruitment Tracker</strong>
               <small>Compliance Tracker</small>
             </span>
           </a>
@@ -320,7 +320,7 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>Compiliance recruitment tracker by Bhel</p>
+        <p>Compliance Recruitment Tracker by Bhel</p>
         <span>Private tracker access required</span>
       </div>
     </footer>

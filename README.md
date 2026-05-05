@@ -1,4 +1,4 @@
-# Compiliance recruitment tracker
+# Compliance Recruitment Tracker
 
 A Node.js project for tracking compliance candidates, required documents, account access, and admin activity history.
 
@@ -47,7 +47,7 @@ npm start
 For live hosting, set `DATA_DIR` to a persistent disk/folder so new accounts and tracker records survive redeploys. This is required if you do not want newly registered accounts to disappear after pushing code changes:
 
 ```powershell
-$env:DATA_DIR="C:\compiliance-recruitment-tracker-data"
+$env:DATA_DIR="C:\compliance-recruitment-tracker-data"
 npm start
 ```
 

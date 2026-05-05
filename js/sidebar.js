@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButton.querySelector('.sidebar-toggle-icon').textContent = isCollapsed ? '>>' : '||';
     toggleButton.setAttribute('aria-label', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
     toggleButton.setAttribute('aria-expanded', String(!isCollapsed));
-    localStorage.setItem('compilianceRecruitmentTrackerSidebarCollapsed', String(isCollapsed));
+    localStorage.setItem('complianceRecruitmentTrackerSidebarCollapsed', String(isCollapsed));
   };
 
-  const savedState = localStorage.getItem('compilianceRecruitmentTrackerSidebarCollapsed') === 'true';
+  const savedState = localStorage.getItem('complianceRecruitmentTrackerSidebarCollapsed') === 'true';
   setCollapsedState(savedState);
 
   const setActiveLink = () => {

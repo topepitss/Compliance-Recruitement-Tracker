@@ -1,8 +1,8 @@
 const AUTH_CONFIG = {
-  sessionKey: 'compilianceRecruitmentTrackerAuthSession',
-  userKey: 'compilianceRecruitmentTrackerAuthUser',
-  roleKey: 'compilianceRecruitmentTrackerAuthRole',
-  logoutKey: 'compilianceRecruitmentTrackerLogoutSignal'
+  sessionKey: 'complianceRecruitmentTrackerAuthSession',
+  userKey: 'complianceRecruitmentTrackerAuthUser',
+  roleKey: 'complianceRecruitmentTrackerAuthRole',
+  logoutKey: 'complianceRecruitmentTrackerLogoutSignal'
 };
 
 function isLoggedIn() {
